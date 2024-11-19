@@ -51,246 +51,311 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#00b3ba;">
-                <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Agregar Nuevo Personal</h4>
+                <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Agregar Nuevo Personal a Programar</h4>
             </div>
             <div class="modal-body">
-                <form action="panel.php?modulo=programacion_ocupacional" id="ingresar" method="POST">
-
-                    <!-- Tabla 1 (Izquierda) -->
-                    <table id="example2" class="table table-bordered table-hover" style="float:left; width: 48%;">
-                        <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <label for="">Dato de Filiacion</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_tipo_documento">Tipo Doc</label></td>
-                            <td>
+                <div class="row">
+                    <!-- Primeras dos tablas (Datos del Personal) alineadas a la izquierda -->
+                    <div class="col-md-6">
+                        <table id="tabla1" class="table table-bordered table-hover">
+                            <tr>
+                                <td><label for="add_tipo_documento">Tipo Doc</label></td>
+                                <td>
                                     <select name="add_tipo_documento" id="add_tipo_documento" class="form-control">
                                         <option value="">Seleccione un Documento</option>
                                         <option value="DNI">DNI</option>
                                         <option value="CARNER_EXTRANJERIA">CARNET EXTRANJERIA</option>
                                         <option value="PASAPORTE">PASAPORTE</option>
                                     </select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><label for="add_numero_documento">Nun Documento</label></td>
-                            <td>
-                                <div style="display: flex; align-items: center;">
-                                    <input type="text" name="add_numero_documento" id="add_numero_documento" placeholder="numero_documento de Personal" class="form-control" required="required">
-                                    <button type="button" style="background-color:#00b3ba; margin-left: 10px;" 
-                                            onmouseover="this.style.backgroundColor='#007bff';" 
-                                            onmouseout="this.style.backgroundColor='#00b3ba';" 
-                                            class="btn btn-primary" 
-                                            onclick="BuscarPaciente()">
-                                        <li class="fa fa-search"></li> <!-- Lupa -->
-                                    </button>
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td><label for="add_nombre_completo">Nombre Completo</label></td>
-                            <td><input type="text" name="add_nombre_completo" id="add_nombre_completo" placeholder="nombre_completo de Personal" class="form-control" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_sexo">Genero</label></td>
-                            <td><select name="add_sexo" id='add_sexo' class="form-control">
-                                <option value="">Seleccione un Genero</option>
-                                    <option value="HOMBRE">HOMBRE</option>
-                                    <option value="MUJER">MUJER</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_fecha_nacimiento">Fecha Nacimiento</label></td>
-                            <td><input type="date" name="add_fecha_nacimiento" id="add_fecha_nacimiento" class="form-control" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_edad">Edad</label></td>
-                            <td><input type="text" name="add_edad" id="add_edad" placeholder="edad de Personal" class="form-control" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_telefono">Telefono</label></td>
-                            <td><input type="text" name="add_telefono" id="add_telefono" placeholder="telefono de Personal" class="form-control" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_estado_civil">Estado Civil</label></td>
-                            <td><select name="add_estado_civil" id='add_estado_civil' class="form-control">
-                                <option value="">Seleccione Estado Civil</option>
-                                    <option value="SOLTERO">SOLTERO</option>
-                                    <option value="CASADO">CASADO</option>
-                                    <option value="VIUDO">VIUDO</option>
-                                    <option value="DIVORCIADO">DIVORCIADO</option>
-                                    <option value="CONVIVIENTE">CONVIVIENTE</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_grado_instrucion">Grado Instruccion</label></td>
-                            <td><select name="add_grado_instrucion" id='add_grado_instrucion' class="form-control">
-                                <option value="">Seleccione Grado de Instruccion</option>
-                                    <option value="PRIMARIA_COMPLETA">PRIMARIA_COMPLETA</option>
-                                    <option value="PRIMARIA_INCOMPLETA">PRIMARIA_INCOMPLETA</option>
-                                    <option value="SECUNDARIA_COMPLETA">SECUNDARIA_COMPLETA</option>
-                                    <option value="SECUNDARIA_INCOMPLETA">SECUNDARIA_INCOMPLETA</option>
-                                    <option value="TECNICO_COMPLETO">TECNICO_COMPLETO</option>
-                                    <option value="UNIVERSITARIO_COMPLETO">UNIVERSITARIO_COMPLETO</option>
-                                    <option value="TECNICO_INCOMPLETO">TECNICO_INCOMPLETO</option>
-                                    <option value="UNICERSITARIO_INCOMPLETO">UNICERSITARIO_INCOMPLETO</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_ocupacion">Ocupacion</label></td>
-                            <td><input type="text" name="add_ocupacion" id="add_ocupacion" placeholder="ocupacion de Personal" class="form-control" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_telefono_emergencia">Telefono de Emergencia</label></td>
-                            <td><input type="text" name="add_telefono_emergencia" id="add_telefono_emergencia" placeholder="telefono_emergencia de Personal" class="form-control" required="required"></td>
-                        </tr>
-                        <tr>
-                        <td>
-                        <label for="add_nombre_contacto">Nombre de contacto de Emergencia</label>
-                        </td>
-                        <td>
-                        <input type="text" name="add_nombre_contacto" id="add_nombre_contacto" placeholder="nombre_contacto de Personal" class="form-control" required="required">
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>
-                        <label for="add_parentesco_emergencia">Parentesco Emergencia</label>
-                        </td>
-                        <td>
-                        <input type="text" name="add_parentesco_emergencia" id="add_parentesco_emergencia" placeholder="parentesco_emergencia de Personal" class="form-control" required="required">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <label for="add_correo">Correo</label>
-                        </td>
-                        <td>
-                        <input type="text" name="add_correo" id="add_correo" placeholder="correo de Personal" class="form-control" required="required">
-                        </td>
-                    </tr>
-                    </table>
-
-
-
-
-                    
-                    <!-- Tabla 2 (Derecha) - Lugar de Residencia y Nacimiento -->
-                    <table id="example2" class="table table-bordered table-hover" style="float:left; width: 48%; margin-left: 10px;">
-                        <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <label for="">Lugar de Residencia Actual</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_pais_residencia">Pais</label></td>
-                            <td><select name="add_pais_residencia" id="add_pais_residencia" class="form-control" onchange="cargarDepartamentos()">
-                                    <option value="">Seleccione un Pais</option>
-                                    <option value="PERU">Perú</option>
-                                    <option value="ARGENTINA">Argentina</option>
-                                    <option value="BOLIVIA">Bolivia</option>
-                                    <option value="BRASIL">Brasil</option>
-                                    <option value="CHILE">Chile</option>
-                                    <option value="COLOMBIA">Colombia</option>
-                                    <option value="GUYANA">Guyana</option>
-                                    <option value="PARAGUAY">Paraguay</option>
-                                    <option value="URUGUAY">Uruguay</option>
-                                    <option value="VENEZUELA">Venezuela</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_departamento_residencia">Departamento</label></td>
-                            <td><select name="add_departamento_residencia" id="add_departamento_residencia" class="form-control" onchange="cargarProvincias()">
-                                    <option value="">Seleccione un departamento</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_provincia_residencia">PROVINCIA</label></td>
-                            <td><select name="add_provincia_residencia" id="add_provincia_residencia" class="form-control" onchange="cargarDistritos()">
-                                    <option value="">Seleccione una provincia</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_distrito_residencia">DISTRITO</label></td>
-                            <td><select name="add_distrito_residencia" id='add_distrito_residencia' class="form-control">
-                                    <option value="">Seleccione un distrito</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_direccion_residencia">Direccion</label></td>
-                            <td><input type="text" name="add_direccion_residencia" id="add_direccion_residencia" placeholder="direccion" class="form-control" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <label for="">Lugar de Nacimiento</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_pais_nacimiento">Pais</label></td>
-                            <td><select name="add_pais_nacimiento" id="add_pais_nacimiento" class="form-control" onchange="cargarDepartamentosNacimiento()">
-                                    <option value="">Seleccione un Pais</option>
-                                    <option value="PERU">Perú</option>
-                                    <option value="ARGENTINA">Argentina</option>
-                                    <option value="BOLIVIA">Bolivia</option>
-                                    <option value="BRASIL">Brasil</option>
-                                    <option value="CHILE">Chile</option>
-                                    <option value="COLOMBIA">Colombia</option>
-                                    <option value="GUYANA">Guyana</option>
-                                    <option value="PARAGUAY">Paraguay</option>
-                                    <option value="URUGUAY">Uruguay</option>
-                                    <option value="VENEZUELA">Venezuela</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_departamento_nacimiento">Departamento</label></td>
-                            <td><select name="add_departamento_nacimiento" id='add_departamento_nacimiento' class="form-control" onchange="cargarProvinciasNacimiento()">
-                                    <option value="">Seleccione un departamento</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_provincia_nacimiento">PROVINCIA</label></td>
-                            <td><select name="add_provincia_nacimiento" id='add_provincia_nacimiento' class="form-control" onchange="cargarDistritosNacimiento()">
-                                    <option value="">Seleccione una provincia</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_distrito_nacimiento">DISTRITO</label></td>
-                            <td><select name="add_distrito_nacimiento" id='add_distrito_nacimiento' class="form-control">
-                                    <option value="">Seleccione un distrito</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="add_direccion_nacimiento">Direccion</label></td>
-                            <td><input type="text" name="add_direccion_nacimiento" id="add_direccion_nacimiento" placeholder="direccion" class="form-control" required="required"></td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-
-
-            <br>
-                    <div class="modal-footer">
-                    <input type="submit" name="add_personal" style="background-color:#00b3ba;" onmouseover="this.style.backgroundColor='#007bff';" onmouseout="this.style.backgroundColor='#00b3ba';" Value="Registrar" class="btn btn-primary">
-                    <button type="button" class="btn btn-link waves-effect" style="background-color:#00b3ba; color:#ffffff" data-dismiss="modal">Cerrar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="add_numero_documento">Num Documento</label></td>
+                                <td>
+                                    <div style="display: flex; align-items: center;">
+                                        <input type="number" name="add_numero_documento" id="add_numero_documento" placeholder="Numero documento" class="form-control" required="required">
+                                        <button type="button" style="background-color:#00b3ba; margin-left: 10px;" 
+                                                onmouseover="this.style.backgroundColor='#007bff';" 
+                                                onmouseout="this.style.backgroundColor='#00b3ba';" 
+                                                class="btn btn-primary" 
+                                                onclick="BuscarPaciente()">
+                                            <li class="fa fa-search"></li> 
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div id="additionalData" style="display: none;">
+                            <table id="tabla2" class="table table-bordered table-hover">
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <label for="">Datos de Filiación</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_nombre_completo">Nombre Completo</label></td>
+                                    <td><input type="text" name="add_nombre_completo" id="add_nombre_completo" placeholder="Nombre Completo" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_sexo">Genero</label></td>
+                                    <td><select name="add_sexo" id='add_sexo' class="form-control">
+                                        <option value="">Seleccione un Genero</option>
+                                        <option value="HOMBRE">HOMBRE</option>
+                                        <option value="MUJER">MUJER</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_fecha_nacimiento">Fecha Nacimiento</label></td>
+                                    <td><input type="date" name="add_fecha_nacimiento" id="add_fecha_nacimiento" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_edad">Edad</label></td>
+                                    <td><input type="text" name="add_edad" id="add_edad" placeholder="Edad" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_telefono">Telefono</label></td>
+                                    <td><input type="text" name="add_telefono" id="add_telefono" placeholder="Telefono" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_correo">Correo</label></td>
+                                    <td><input type="email" name="add_correo" id="add_correo" placeholder="Correo de Personal" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_estado_civil">Estado Civil</label></td>
+                                    <td><select name="add_estado_civil" id='add_estado_civil' class="form-control">
+                                        <option value="">Seleccione Estado Civil</option>
+                                        <option value="SOLTERO">SOLTERO</option>
+                                        <option value="CASADO">CASADO</option>
+                                        <option value="VIUDO">VIUDO</option>
+                                        <option value="DIVORCIADO">DIVORCIADO</option>
+                                        <option value="CONVIVIENTE">CONVIVIENTE</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_grado_instrucion">Grado Instrucción</label></td>
+                                    <td><select name="add_grado_instrucion" id='add_grado_instrucion' class="form-control">
+                                        <option value="">Seleccione Grado de Instrucción</option>
+                                        <option value="PRIMARIA_COMPLETA">PRIMARIA COMPLETA</option>
+                                        <option value="PRIMARIA_INCOMPLETA">PRIMARIA INCOMPLETA</option>
+                                        <option value="SECUNDARIA_COMPLETA">SECUNDARIA COMPLETA</option>
+                                        <option value="SECUNDARIA_INCOMPLETA">SECUNDARIA INCOMPLETA</option>
+                                        <option value="TECNICO_COMPLETO">TÉCNICO COMPLETO</option>
+                                        <option value="UNIVERSITARIO_COMPLETO">UNIVERSITARIO COMPLETO</option>
+                                        <option value="TECNICO_INCOMPLETO">TÉCNICO INCOMPLETO</option>
+                                        <option value="UNIVERSITARIO_INCOMPLETO">UNIVERSITARIO INCOMPLETO</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_ocupacion">Ocupación</label></td>
+                                    <td><input type="text" name="add_ocupacion" id="add_ocupacion" placeholder="Ocupación" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_telefono_emergencia">Teléfono de Emergencia</label></td>
+                                    <td><input type="text" name="add_telefono_emergencia" id="add_telefono_emergencia" placeholder="Teléfono de emergencia" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_nombre_contacto">Contacto de Emergencia</label></td>
+                                    <td><input type="text" name="add_nombre_contacto" id="add_nombre_contacto" placeholder="Contacto de emergencia" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_parentesco_emergencia">Parentesco de Emergencia</label></td>
+                                    <td><input type="text" name="add_parentesco_emergencia" id="add_parentesco_emergencia" placeholder="Parentesco emergencia" class="form-control" required="required"></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
+
+                    <!-- Segunda columna: Datos de Residencia y Nacimiento alineados a la derecha -->
+                        <div class="col-md-6">
+                            <div id="additionalData2" style="display: none;">
+                            <table id="tabla3" class="table table-bordered table-hover">
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <label for="">Lugar de Residencia Actual</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_pais_residencia">Pais</label></td>
+                                    <td><select name="add_pais_residencia" id="add_pais_residencia" class="form-control" onchange="cargarDepartamentos()">
+                                        <option value="">Seleccione un País</option>
+                                        <option value="PERU">Perú</option>
+                                        <option value="ARGENTINA">Argentina</option>
+                                        <option value="BOLIVIA">Bolivia</option>
+                                        <option value="BRASIL">Brasil</option>
+                                        <option value="CHILE">Chile</option>
+                                        <option value="COLOMBIA">Colombia</option>
+                                        <option value="GUYANA">Guyana</option>
+                                        <option value="PARAGUAY">Paraguay</option>
+                                        <option value="URUGUAY">Uruguay</option>
+                                        <option value="VENEZUELA">Venezuela</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_departamento_residencia">Departamento</label></td>
+                                    <td><select name="add_departamento_residencia" id="add_departamento_residencia" class="form-control" onchange="cargarProvincias()">
+                                        <option value="">Seleccione un departamento</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_provincia_residencia">Provincia</label></td>
+                                    <td><select name="add_provincia_residencia" id="add_provincia_residencia" class="form-control" onchange="cargarDistritos()">
+                                        <option value="">Seleccione una provincia</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_distrito_residencia">Distrito</label></td>
+                                    <td><select name="add_distrito_residencia" id='add_distrito_residencia' class="form-control">
+                                        <option value="">Seleccione un distrito</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_direccion_residencia">Dirección</label></td>
+                                    <td><input type="text" name="add_direccion_residencia" id="add_direccion_residencia" placeholder="Dirección" class="form-control" required="required"></td>
+                                </tr>
+                            </table>
+
+                            <table id="tabla4" class="table table-bordered table-hover">
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <label for="">Lugar de Nacimiento</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_pais_nacimiento">Pais</label></td>
+                                    <td><select name="add_pais_nacimiento" id="add_pais_nacimiento" class="form-control" onchange="cargarDepartamentosNacimiento()">
+                                        <option value="">Seleccione un País</option>
+                                        <option value="PERU">Perú</option>
+                                        <option value="ARGENTINA">Argentina</option>
+                                        <option value="BOLIVIA">Bolivia</option>
+                                        <option value="BRASIL">Brasil</option>
+                                        <option value="CHILE">Chile</option>
+                                        <option value="COLOMBIA">Colombia</option>
+                                        <option value="GUYANA">Guyana</option>
+                                        <option value="PARAGUAY">Paraguay</option>
+                                        <option value="URUGUAY">Uruguay</option>
+                                        <option value="VENEZUELA">Venezuela</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_departamento_nacimiento">Departamento</label></td>
+                                    <td><select name="add_departamento_nacimiento" id="add_departamento_nacimiento" class="form-control" onchange="cargarProvinciasNacimiento()">
+                                        <option value="">Seleccione un departamento</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_provincia_nacimiento">Provincia</label></td>
+                                    <td><select name="add_provincia_nacimiento" id="add_provincia_nacimiento" class="form-control" onchange="cargarDistritosNacimiento()">
+                                        <option value="">Seleccione una provincia</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_distrito_nacimiento">Distrito</label></td>
+                                    <td><select name="add_distrito_nacimiento" id='add_distrito_nacimiento' class="form-control">
+                                        <option value="">Seleccione un distrito</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="add_direccion_nacimiento">Dirección</label></td>
+                                    <td><input type="text" name="add_direccion_nacimiento" id="add_direccion_nacimiento" placeholder="Dirección" class="form-control" required="required"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" style="background-color:#00b3ba;" onmouseover="this.style.backgroundColor='#007bff';" onmouseout="this.style.backgroundColor='#00b3ba';" class="btn btn-primary" onclick="RegistrarPaciente()">Registrar</button>
+                <button type="button" class="btn btn-link waves-effect" style="background-color:#00b3ba; color:#ffffff" data-dismiss="modal">Cerrar</button>
+            </div>
 
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="ModalDatosProgramacion" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xs" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#00b3ba;">
+                <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Datos Protocolo / Perfil</h4>
+            </div>
+            <div class="modal-body">
+                    
+                    <table id="example2" class="table table-bordered table-hover">
+                        <tr>
+                            <td>
+                                <label for="prog_codigo_colaborador">Codigo Colaborador</label>
+                            </td>
+                            <td>
+                                <input type="text" name="prog_codigo_colaborador" id="prog_codigo_colaborador" class="form-control" required="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="prog_nombre">Nombre Colaborador</label>
+                            </td>
+                            <td>
+                                <input type="text" name="prog_nombre" id="prog_nombre" class="form-control" required="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="prog_proyecto">Seguro</label>
+                            </td>
+                            <td>
+                                <select name="prog_proyecto" id='prog_proyecto' class="form-control">
+                                <?php 
+                                    //session_start();
+                                    $id_empresa=$_SESSION['id_empresa'];
+                                    $query="Select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1 and id_empresa='$id_empresa'";
+                                    $res = mysqli_query($con,$query);
+                                    while ($row = mysqli_fetch_assoc($res)):
+                                        echo "<option value=".$row['id_proyecto'].">".$row['descripcion']."</option>";
+                                    endwhile;
+                                ?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="prog_protocolo">Protocolo / Perfil</label>
+                            </td>
+                            <td>
+                            <select name="prog_protocolo" id='prog_protocolo' class="form-control">
+                                <?php 
+                                    //session_start();
+                                    $id_empresa=$_SESSION['id_empresa'];
+                                    $query="Select id_protocolo,nombre from ma_ocupacional_protocolos where estado=1 and id_empresa='$id_empresa'";
+                                    $res = mysqli_query($con,$query);
+                                    while ($row = mysqli_fetch_assoc($res)):
+                                        echo "<option value=".$row['id_protocolo'].">".$row['nombre']."</option>";
+                                    endwhile;
+                                ?>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 <script>
@@ -298,6 +363,156 @@
 window.onload = function() {
     cargarTabla();
 };
+
+function VerModalNuevo(){
+    $('#AddModal').modal('show');
+    /*document.getElementById('tabla3').style.display = 'none';
+    document.getElementById('tabla4').style.display = 'none';*/
+
+}
+
+function GuardarProgramacionPersonal(){
+    id_paciente=document.getElementById('prog_codigo_colaborador').value;
+    id_proyecto=document.getElementById('prog_proyecto').value;
+    id_protocolo=document.getElementById('prog_protocolo').value;
+    fecha=document.getElementById('fecha_detalle_inicio').value;
+
+    $.ajax({
+        method: "POST",
+        url: 'controllers/ctrProgramacion_ocupacional.php',
+        data: {
+            "accion": "GUARDAR_PROGRAMACION",
+            "id_paciente": id_paciente,
+            "id_proyecto": id_proyecto,
+            "id_protocolo": id_protocolo,
+            "fecha":fecha
+        }
+    })
+    .done(function( retorno ) {
+        if(retorno==true){
+            //alert(retorno);
+            alert("Paciente Programado con Exito!");
+            $('#ModalDatosProgramacion').modal('hide');
+            cargarTabla();
+        }
+        if(retorno=='ERROR'){
+            alert("ERROR");
+        }
+    });   
+
+}
+
+function RegistrarPaciente(){
+    if(validarFormulario()){
+        tipoDocumento = document.getElementById('add_tipo_documento').value;
+        numeroDocumento = document.getElementById('add_numero_documento').value;
+        nombreCompleto = document.getElementById('add_nombre_completo').value;
+        sexo = document.getElementById('add_sexo').value;
+        fechaNacimiento = document.getElementById('add_fecha_nacimiento').value;
+        edad = document.getElementById('add_edad').value;
+        telefono = document.getElementById('add_telefono').value;
+        estadoCivil = document.getElementById('add_estado_civil').value;
+        gradoInstruccion = document.getElementById('add_grado_instrucion').value;
+        ocupacion = document.getElementById('add_ocupacion').value;
+        telefonoEmergencia = document.getElementById('add_telefono_emergencia').value;
+        nombreContacto = document.getElementById('add_nombre_contacto').value;
+        parentescoEmergencia = document.getElementById('add_parentesco_emergencia').value;
+        correo = document.getElementById('add_correo').value;
+
+        paisResidencia = document.getElementById('add_pais_residencia').value;
+        departamentoResidencia = document.getElementById('add_departamento_residencia').value;
+        provinciaResidencia = document.getElementById('add_provincia_residencia').value;
+        distritoResidencia = document.getElementById('add_distrito_residencia').value;
+        direccionResidencia = document.getElementById('add_direccion_residencia').value;
+        // Datos de lugar de nacimiento
+        paisNacimiento = document.getElementById('add_pais_nacimiento').value;
+        departamentoNacimiento = document.getElementById('add_departamento_nacimiento').value;
+        provinciaNacimiento = document.getElementById('add_provincia_nacimiento').value;
+        distritoNacimiento = document.getElementById('add_distrito_nacimiento').value;
+        direccionNacimiento = document.getElementById('add_direccion_nacimiento').value;
+
+        $.ajax({
+            method: "POST",
+            url: 'controllers/ctrProgramacion_ocupacional.php',
+            data: {
+                "accion": "GUARDAR_PACIENTE_NUEVO",
+                "tipo_documento": tipoDocumento,
+                "numeroDocumento": numeroDocumento,
+                "nombre_completo": nombreCompleto,
+                "sexo": sexo,
+                "fecha_nacimiento": fechaNacimiento,
+                "edad": edad,
+                "telefono": telefono,
+                "estado_civil": estadoCivil,
+                "grado_instruccion": gradoInstruccion,
+                "ocupacion": ocupacion,
+                "telefono_emergencia": telefonoEmergencia,
+                "nombre_contacto": nombreContacto,
+                "parentesco_emergencia": parentescoEmergencia,
+                "correo": correo,
+                "pais_residencia": paisResidencia,
+                "departamento_residencia": departamentoResidencia,
+                "provincia_residencia": provinciaResidencia,
+                "distrito_residencia": distritoResidencia,
+                "direccion_residencia": direccionResidencia,
+                "pais_nacimiento": paisNacimiento,
+                "departamento_nacimiento": departamentoNacimiento,
+                "provincia_nacimiento": provinciaNacimiento,
+                "distrito_nacimiento": distritoNacimiento,
+                "direccion_nacimiento": direccionNacimiento
+            }
+        })
+        .done(function( retorno ) {
+            
+            if(retorno=='ERROR'){
+                alert('ERROR AL REGISTRAR EL PACIENTE');
+            }else{
+                alert('Paciente Registrado!, Completar Info Medica');
+                retorno=retorno.split('%');
+                document.getElementById('prog_nombre').value=retorno[2];
+                document.getElementById('prog_codigo_colaborador').value=retorno[1];
+                $('#AddModal').modal('hide');
+                $('#ModalDatosProgramacion').modal('show');
+                //cargarTabla();
+            }
+        });  
+    }
+     
+}
+
+function validarFormulario() {
+    var tipoDocumento = document.getElementById('add_tipo_documento').value;
+    var numeroDocumento = document.getElementById('add_numero_documento').value;
+    var nombreCompleto = document.getElementById('add_nombre_completo').value;
+    var sexo = document.getElementById('add_sexo').value;
+    var fechaNacimiento = document.getElementById('add_fecha_nacimiento').value;
+    var edad = document.getElementById('add_edad').value;
+    var telefono = document.getElementById('add_telefono').value;
+    var estadoCivil = document.getElementById('add_estado_civil').value;
+    var gradoInstruccion = document.getElementById('add_grado_instrucion').value;
+    var ocupacion = document.getElementById('add_ocupacion').value;
+    var telefonoEmergencia = document.getElementById('add_telefono_emergencia').value;
+    var nombreContacto = document.getElementById('add_nombre_contacto').value;
+    var parentescoEmergencia = document.getElementById('add_parentesco_emergencia').value;
+    var correo = document.getElementById('add_correo').value;
+
+    var paisResidencia = document.getElementById('add_pais_residencia').value;
+    var direccionResidencia = document.getElementById('add_direccion_residencia').value;
+    
+    var paisNacimiento = document.getElementById('add_pais_nacimiento').value;
+    var direccionNacimiento = document.getElementById('add_direccion_nacimiento').value;
+
+    if (!tipoDocumento || !numeroDocumento || !nombreCompleto || !sexo || !fechaNacimiento || !edad || 
+        !telefono || !estadoCivil || !gradoInstruccion || !ocupacion || !telefonoEmergencia || 
+        !nombreContacto || !parentescoEmergencia || !correo ||
+        !paisResidencia || !direccionResidencia || !paisNacimiento || !direccionNacimiento) {
+        
+        alert("Por favor, complete todos los campos obligatorios.");
+        return false; 
+    }
+    return true;
+}
+
 
 function BuscarPaciente(){
     documento= document.getElementById('add_numero_documento').value;
@@ -308,20 +523,53 @@ function BuscarPaciente(){
               "accion": "BUSCAR_PACIENTE",
               "documento": documento
             }
-      })
-      .done(function( retorno ) {
+    })
+    .done(function( retorno ) {
         retorno=retorno.split('%');
+        var additionalData = document.getElementById('additionalData');
+        additionalData.style.display = "block";
+
+        var additionalData2 = document.getElementById('additionalData2');
+        additionalData2.style.display = "block";
         if(retorno[0]=='3'){
             alert("Sin informacion encontrada");
+            document.getElementById('add_numero_documento').value='';
+            document.getElementById('add_nombre_completo').value='';
         }
         if(retorno[0]=="2"){
             document.getElementById('add_nombre_completo').value=retorno[1];
         }
         if(retorno[0]=="1"){
-            alert("OK");
-        }
+            document.getElementById('add_tipo_documento').value=retorno[3]
+            //document.getElementById('add_numero_documento').value=retorno[3]
+            document.getElementById('add_nombre_completo').value=retorno[5]
+            document.getElementById('add_sexo').value=retorno[6]
+            document.getElementById('add_fecha_nacimiento').value=retorno[7]
+            document.getElementById('add_edad').value=retorno[8]
+            document.getElementById('add_telefono').value=retorno[9]
+            document.getElementById('add_estado_civil').value=retorno[10]
+            document.getElementById('add_grado_instrucion').value=retorno[11]
+            document.getElementById('add_ocupacion').value=retorno[12]
+            document.getElementById('add_telefono_emergencia').value=retorno[13]
+            document.getElementById('add_nombre_contacto').value=retorno[14]
+            document.getElementById('add_parentesco_emergencia').value=retorno[15]
+            document.getElementById('add_correo').value=retorno[16]
 
-      }); 
+            document.getElementById('add_pais_residencia').value=retorno[17]
+            document.getElementById('add_departamento_residencia').value=retorno[18]
+            document.getElementById('add_provincia_residencia').value=retorno[19]
+            document.getElementById('add_distrito_residencia').value=retorno[20]
+            document.getElementById('add_direccion_residencia').value=retorno[21]
+           
+            document.getElementById('add_pais_nacimiento').value=retorno[22]
+            document.getElementById('add_departamento_nacimiento').value=retorno[23]
+            document.getElementById('add_provincia_nacimiento').value=retorno[24]
+            document.getElementById('add_distrito_nacimiento').value=retorno[25]
+            document.getElementById('add_direccion_nacimiento').value=retorno[26]
+
+            //alert("OK");
+        }
+    }); 
 }
 
 function cargarTabla(){
@@ -334,21 +582,11 @@ function cargarTabla(){
               "accion": "LIST_TABLA_DIA",
               "fecha": fecha
             }
-      })
-      .done(function( retorno ) {
-        //retorno=retorno.split('%');
+    })
+    .done(function( retorno ) {
         $("#tabla_lista_programaciones").html(retorno);
-        //document.getElementById('visor_empresa_nombre').value =retorno[0];
-        //document.getElementById('visor_descripcion').value =retorno[1];
-
-      });   
-      
+    });     
 }
-
-
-
-
-
 
 // Datos de países, departamentos, provincias y distritos
 

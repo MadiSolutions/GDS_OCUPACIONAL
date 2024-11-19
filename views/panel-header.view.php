@@ -6,12 +6,7 @@
         echo '<script>window.location="login.php"</script>';
     }
     else{
-        $user = $_SESSION['usuario'];
-        $sql="SELECT * FROM usuarios where dni='$user' LIMIT 1";
-        $resultado=mysqli_query($con,$sql);
-        while($filas=mysqli_fetch_assoc($resultado)){
-          $nom_usuario=$filas['nombre'];
-        }
+          $nom_usuario=$_SESSION['razon_social'];
     } 
 ?>
 <!DOCTYPE html>

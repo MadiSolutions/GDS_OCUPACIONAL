@@ -48,7 +48,7 @@
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
       <img src="images/logo1.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"><br>
-      <a class="h1" style="color:#00b3ba"><b>GDS App</b></a>
+      <a class="h1" style="color:#00b3ba"><b>GDS App Ocupacional</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg" style="color:#00b3ba">Inicio de Sesion</p>
