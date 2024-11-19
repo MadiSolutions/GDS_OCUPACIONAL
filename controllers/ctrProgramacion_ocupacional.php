@@ -8,6 +8,17 @@ function controlador($accion) {
     $cone = mysqli_connect($host, $user, $pass, $db);  
 
     switch ($accion) {
+        case 'ELIMINAR_PROGRAMACION':
+            $id_programacion = $_POST['id_programacion'];
+            $queryUpdate = "UPDATE ma_ocupacional_programaciones set estado=0,estado_bajada=0 WHERE id_programacion='$id_programacion'";
+            $resUpdate = mysqli_query($cone, $queryUpdate);
+            if ($resUpdate !== false) {
+                echo true;
+            } else {
+                echo false;
+            }
+
+        break;
         case 'GUARDAR_PROGRAMACION':
             date_default_timezone_set('America/Lima');
             $hoy=date("Y-m-d"); 
@@ -237,13 +248,15 @@ function controlador($accion) {
                 echo "<table class='table table-bordered table-hover'>";
                 echo '<thead style="background-color:#55B7BE;color:#FFFFFF" >';
                 echo "<tr>";
-                echo "<th>Codigo</th><th>Paciente</th><th>Proyecto</th><th>Protocolo</th><th></th>";
+                echo "<th>Codigo</th><th>Paciente</th><th>Proyecto</th><th>Protocolo</th><th>-</th>";
                 echo "</tr>";
                 echo '</thead>';
 
                 while ($row = mysqli_fetch_assoc($res)) : 
                     echo "<tr>";
-                    echo "<td>".$row['codigo']."</td><td>".$row['nombre']."</td><td>".$row['desc_proyecto']."</td><td>".$row['nom_protocolo']."</td><td>-</td>";
+                    echo "<td>".$row['codigo']."</td><td>".$row['nombre']."</td><td>".$row['desc_proyecto']."</td><td>".$row['nom_protocolo']."</td><td>";
+                    echo '<button type="button" class="btn btn-danger btn-xs" onclick="AbrirModalEliminacionProgramacion('."'".$row['codigo']."','".$row['nombre']."'".')"><li class="fa fa-trash"></li></button>'; 
+                    echo "</td>";
                     echo "</tr>";
                 endwhile;
             }else{

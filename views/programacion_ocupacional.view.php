@@ -46,6 +46,41 @@
     </section>
 </div>
 
+<div class="modal fade" id="DeleteProgramacionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h4 class="modal-title" id="defaultModalLabel">Eliminar Programacion</h4>
+            </div>
+            <div class="modal-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <tr>
+                            <td>
+                                <label for="prog_delete_id">Codigo</label>
+                            </td>
+                            <td>
+                                <input type="text" name="prog_delete_id" id="prog_delete_id" class="form-control" required="required" readonly>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="prog_delete_nombre">Nombre Paciente</label>
+                            </td>
+                            <td>
+                                <input type="text" name="prog_delete_nombre" id="prog_delete_nombre" class="form-control" required="required" readonly>  
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <button type="button" class="btn btn-danger" onclick="EliminarProgramacion()">Eliminar</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="AddModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-xl" role="document">
@@ -363,6 +398,37 @@
 window.onload = function() {
     cargarTabla();
 };
+
+function EliminarProgramacion (){
+    id_programacion=document.getElementById('prog_delete_id').value;
+    $.ajax({
+        method: "POST",
+        url: 'controllers/ctrProgramacion_ocupacional.php',
+        data: {
+            "accion": "ELIMINAR_PROGRAMACION",
+            "id_programacion": id_programacion
+        }
+    })
+    .done(function( retorno ) {
+        if(retorno==true){
+            alert("Programacion Eliminada con Exito!");
+            $('#DeleteProgramacionModal').modal('hide');
+            cargarTabla();
+        }
+        if(retorno==false){
+            alert("ERROR");
+            cargarTabla();
+        }
+    }); 
+}
+
+
+
+function AbrirModalEliminacionProgramacion(id_programacion,nombre){
+    $('#DeleteProgramacionModal').modal('show');
+    document.getElementById('prog_delete_id').value = id_programacion;
+    document.getElementById('prog_delete_nombre').value=nombre;
+}
 
 function VerModalNuevo(){
     $('#AddModal').modal('show');
