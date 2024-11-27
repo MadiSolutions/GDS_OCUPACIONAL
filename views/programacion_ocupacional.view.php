@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="color:#00b3ba; font-weight: bold;">Mis Programaciones -> Ocupacional Programaciones</h1>
+                    <h1 style="color:#00b3ba; font-weight: bold;">Mis Programaciones -> Programaciones</h1>
                 </div>
             </div>
         </div>
@@ -348,7 +348,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <label for="prog_proyecto">Seguro</label>
+                                <label for="prog_proyecto">Proyecto</label>
                             </td>
                             <td>
                                 <select name="prog_proyecto" id='prog_proyecto' class="form-control">
@@ -391,6 +391,308 @@
 
 
 
+<div class="modal fade" id="EditPacienteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#00b3ba;">
+                <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Agregar Nuevo Personal a Programar</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Primeras dos tablas (Datos del Personal) alineadas a la izquierda -->
+                    <div class="col-md-6">
+                    <input type="hidden" name="upd_id_paciente" id="upd_id_paciente" value="" class="form-control">
+                        <table id="tablaA" class="table table-bordered table-hover">
+                            <tr>
+                                <td><label for="upd_tipo_documento">Tipo Doc</label></td>
+                                <td>
+                                    <select name="upd_tipo_documento" id="upd_tipo_documento" class="form-control">
+                                        <option value="">Seleccione un Documento</option>
+                                        <option value="DNI">DNI</option>
+                                        <option value="CARNER_EXTRANJERIA">CARNET EXTRANJERIA</option>
+                                        <option value="PASAPORTE">PASAPORTE</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="upd_numero_documento">Num Documento</label></td>
+                                <td>
+                                    <div style="display: flex; align-items: center;">
+                                        <input type="number" name="upd_numero_documento" id="upd_numero_documento" placeholder="Numero documento" class="form-control" required="required">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div id="additionalData" >
+                            <table id="tablaB" class="table table-bordered table-hover">
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <label for="">Datos de Filiación</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_nombre_completo">Nombre Completo</label></td>
+                                    <td><input type="text" name="upd_nombre_completo" id="upd_nombre_completo" placeholder="Nombre Completo" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_sexo">Genero</label></td>
+                                    <td><select name="upd_sexo" id='upd_sexo' class="form-control">
+                                        <option value="">Seleccione un Genero</option>
+                                        <option value="HOMBRE">HOMBRE</option>
+                                        <option value="MUJER">MUJER</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_fecha_nacimiento">Fecha Nacimiento</label></td>
+                                    <td><input type="date" name="upd_fecha_nacimiento" id="upd_fecha_nacimiento" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_edad">Edad</label></td>
+                                    <td><input type="text" name="upd_edad" id="upd_edad" placeholder="Edad" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_telefono">Telefono</label></td>
+                                    <td><input type="text" name="upd_telefono" id="upd_telefono" placeholder="Telefono" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_correo">Correo</label></td>
+                                    <td><input type="email" name="upd_correo" id="upd_correo" placeholder="Correo de Personal" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_estado_civil">Estado Civil</label></td>
+                                    <td><select name="upd_estado_civil" id='upd_estado_civil' class="form-control">
+                                        <option value="">Seleccione Estado Civil</option>
+                                        <option value="SOLTERO">SOLTERO</option>
+                                        <option value="CASADO">CASADO</option>
+                                        <option value="VIUDO">VIUDO</option>
+                                        <option value="DIVORCIADO">DIVORCIADO</option>
+                                        <option value="CONVIVIENTE">CONVIVIENTE</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_grado_instrucion">Grado Instrucción</label></td>
+                                    <td><select name="upd_grado_instrucion" id='upd_grado_instrucion' class="form-control">
+                                        <option value="">Seleccione Grado de Instrucción</option>
+                                        <option value="PRIMARIA_COMPLETA">PRIMARIA COMPLETA</option>
+                                        <option value="PRIMARIA_INCOMPLETA">PRIMARIA INCOMPLETA</option>
+                                        <option value="SECUNDARIA_COMPLETA">SECUNDARIA COMPLETA</option>
+                                        <option value="SECUNDARIA_INCOMPLETA">SECUNDARIA INCOMPLETA</option>
+                                        <option value="TECNICO_COMPLETO">TÉCNICO COMPLETO</option>
+                                        <option value="UNIVERSITARIO_COMPLETO">UNIVERSITARIO COMPLETO</option>
+                                        <option value="TECNICO_INCOMPLETO">TÉCNICO INCOMPLETO</option>
+                                        <option value="UNIVERSITARIO_INCOMPLETO">UNIVERSITARIO INCOMPLETO</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_ocupacion">Ocupación</label></td>
+                                    <td><input type="text" name="upd_ocupacion" id="upd_ocupacion" placeholder="Ocupación" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_telefono_emergencia">Teléfono de Emergencia</label></td>
+                                    <td><input type="text" name="upd_telefono_emergencia" id="upd_telefono_emergencia" placeholder="Teléfono de emergencia" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_nombre_contacto">Contacto de Emergencia</label></td>
+                                    <td><input type="text" name="upd_nombre_contacto" id="upd_nombre_contacto" placeholder="Contacto de emergencia" class="form-control" required="required"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_parentesco_emergencia">Parentesco de Emergencia</label></td>
+                                    <td><input type="text" name="upd_parentesco_emergencia" id="upd_parentesco_emergencia" placeholder="Parentesco emergencia" class="form-control" required="required"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Segunda columna: Datos de Residencia y Nacimiento alineados a la derecha -->
+                        <div class="col-md-6">
+                            <div id="additionalData2" >
+                            <table id="tablaC" class="table table-bordered table-hover">
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <label for="">Lugar de Residencia Actual</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_pais_residencia">Pais</label></td>
+                                    <td><select name="upd_pais_residencia" id="upd_pais_residencia" class="form-control" onchange="cargarDepartamentos()">
+                                        <option value="">Seleccione un País</option>
+                                        <option value="PERU">Perú</option>
+                                        <option value="ARGENTINA">Argentina</option>
+                                        <option value="BOLIVIA">Bolivia</option>
+                                        <option value="BRASIL">Brasil</option>
+                                        <option value="CHILE">Chile</option>
+                                        <option value="COLOMBIA">Colombia</option>
+                                        <option value="GUYANA">Guyana</option>
+                                        <option value="PARAGUAY">Paraguay</option>
+                                        <option value="URUGUAY">Uruguay</option>
+                                        <option value="VENEZUELA">Venezuela</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_departamento_residencia">Departamento</label></td>
+                                    <td><select name="upd_departamento_residencia" id="upd_departamento_residencia" class="form-control" onchange="cargarProvincias()">
+                                        <option value="">Seleccione un departamento</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_provincia_residencia">Provincia</label></td>
+                                    <td><select name="upd_provincia_residencia" id="upd_provincia_residencia" class="form-control" onchange="cargarDistritos()">
+                                        <option value="">Seleccione una provincia</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_distrito_residencia">Distrito</label></td>
+                                    <td><select name="upd_distrito_residencia" id='upd_distrito_residencia' class="form-control">
+                                        <option value="">Seleccione un distrito</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_direccion_residencia">Dirección</label></td>
+                                    <td><input type="text" name="upd_direccion_residencia" id="upd_direccion_residencia" placeholder="Dirección" class="form-control" required="required"></td>
+                                </tr>
+                            </table>
+
+                            <table id="tabla4" class="table table-bordered table-hover">
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <label for="">Lugar de Nacimiento</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_pais_nacimiento">Pais</label></td>
+                                    <td><select name="upd_pais_nacimiento" id="upd_pais_nacimiento" class="form-control" onchange="cargarDepartamentosNacimiento()">
+                                        <option value="">Seleccione un País</option>
+                                        <option value="PERU">Perú</option>
+                                        <option value="ARGENTINA">Argentina</option>
+                                        <option value="BOLIVIA">Bolivia</option>
+                                        <option value="BRASIL">Brasil</option>
+                                        <option value="CHILE">Chile</option>
+                                        <option value="COLOMBIA">Colombia</option>
+                                        <option value="GUYANA">Guyana</option>
+                                        <option value="PARAGUAY">Paraguay</option>
+                                        <option value="URUGUAY">Uruguay</option>
+                                        <option value="VENEZUELA">Venezuela</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_departamento_nacimiento">Departamento</label></td>
+                                    <td><select name="upd_departamento_nacimiento" id="upd_departamento_nacimiento" class="form-control" onchange="cargarProvinciasNacimiento()">
+                                        <option value="">Seleccione un departamento</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_provincia_nacimiento">Provincia</label></td>
+                                    <td><select name="upd_provincia_nacimiento" id="upd_provincia_nacimiento" class="form-control" onchange="cargarDistritosNacimiento()">
+                                        <option value="">Seleccione una provincia</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_distrito_nacimiento">Distrito</label></td>
+                                    <td><select name="upd_distrito_nacimiento" id='upd_distrito_nacimiento' class="form-control">
+                                        <option value="">Seleccione un distrito</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="upd_direccion_nacimiento">Dirección</label></td>
+                                    <td><input type="text" name="upd_direccion_nacimiento" id="upd_direccion_nacimiento" placeholder="Dirección" class="form-control" required="required"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" style="background-color:#00b3ba;" onmouseover="this.style.backgroundColor='#007bff';" onmouseout="this.style.backgroundColor='#00b3ba';" class="btn btn-primary" onclick="ActualizarPaciente()">Actualizar</button>
+                <button type="button" class="btn btn-link waves-effect" style="background-color:#00b3ba; color:#ffffff" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalEditDatosProgramacion" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xs" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#00b3ba;">
+                <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Datos Protocolo / Perfil</h4>
+            </div>
+            <div class="modal-body">
+                    <input type="hidden" name="upd_prog_id_programacion" id="upd_prog_id_programacion" value="" class="form-control">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <tr>
+                            <td>
+                                <label for="upd_prog_codigo_colaborador">Codigo Colaborador</label>
+                            </td>
+                            <td>
+                                <input type="text" name="upd_prog_codigo_colaborador" id="upd_prog_codigo_colaborador" class="form-control" required="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="upd_prog_nombre">Nombre Colaborador</label>
+                            </td>
+                            <td>
+                                <input type="text" name="upd_prog_nombre" id="upd_prog_nombre" class="form-control" required="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="upd_prog_proyecto">Proyecto</label>
+                            </td>
+                            <td>
+                                <select name="upd_prog_proyecto" id='upd_prog_proyecto' class="form-control">
+                                <?php 
+                                    //session_start();
+                                    $id_empresa=$_SESSION['id_empresa'];
+                                    $query="Select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1 and id_empresa='$id_empresa'";
+                                    $res = mysqli_query($con,$query);
+                                    while ($row = mysqli_fetch_assoc($res)):
+                                        echo "<option value=".$row['id_proyecto'].">".$row['descripcion']."</option>";
+                                    endwhile;
+                                ?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="upd_prog_protocolo">Protocolo / Perfil</label>
+                            </td>
+                            <td>
+                            <select name="upd_prog_protocolo" id='upd_prog_protocolo' class="form-control">
+                                <?php 
+                                    //session_start();
+                                    $id_empresa=$_SESSION['id_empresa'];
+                                    $query="Select id_protocolo,nombre from ma_ocupacional_protocolos where estado=1 and id_empresa='$id_empresa'";
+                                    $res = mysqli_query($con,$query);
+                                    while ($row = mysqli_fetch_assoc($res)):
+                                        echo "<option value=".$row['id_protocolo'].">".$row['nombre']."</option>";
+                                    endwhile;
+                                ?>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 <script>
@@ -398,6 +700,207 @@
 window.onload = function() {
     cargarTabla();
 };
+
+function ActualizarProgramacionPersonal(){
+    id_programacion=document.getElementById('upd_prog_id_programacion').value;
+    id_proyecto=document.getElementById('upd_prog_proyecto').value;
+    id_protocolo=document.getElementById('upd_prog_protocolo').value;
+    $.ajax({
+        method: "POST",
+        url: 'controllers/ctrProgramacion_ocupacional.php',
+        data: {
+            "accion": "UPDATE_PROGRAMACION",
+            "id_programacion": id_programacion,
+            "id_proyecto": id_proyecto,
+            "id_protocolo": id_protocolo
+        }
+    })
+    .done(function( retorno ) {
+        if(retorno==true){
+            //alert(retorno);
+            alert("Programacion actualizada con Exito!");
+            $('#ModalEditDatosProgramacion').modal('hide');
+            cargarTabla();
+        }
+        if(retorno==false){
+            alert("ERROR");
+        }
+    });   
+
+}
+
+function AbrirModalEdicionProgramacion (id_programacion,nombre_pac,cod_paciente){
+    $('#ModalEditDatosProgramacion').modal('show');
+    document.getElementById('upd_prog_id_programacion').value=id_programacion;
+    document.getElementById('upd_prog_codigo_colaborador').value=cod_paciente;
+    document.getElementById('upd_prog_nombre').value=nombre_pac;
+    $.ajax({
+          method: "POST",
+          url: 'controllers/ctrProgramacion_ocupacional.php',
+          data: {
+              "accion": "BUSCAR_PROGRAMACION_EDIT",
+              "id_programacion": id_programacion
+            }
+    })
+    .done(function( retorno ) {
+        retorno=retorno.split('%');
+        document.getElementById('upd_prog_proyecto').value=retorno[0]
+        document.getElementById('upd_prog_protocolo').value=retorno[2]
+    }); 
+}
+
+function ActualizarPaciente(){
+    if(validarFormularioA()){
+        id_paciente = document.getElementById('upd_id_paciente').value;
+        tipoDocumento = document.getElementById('upd_tipo_documento').value;
+        numeroDocumento = document.getElementById('upd_numero_documento').value;
+        nombreCompleto = document.getElementById('upd_nombre_completo').value;
+        sexo = document.getElementById('upd_sexo').value;
+        fechaNacimiento = document.getElementById('upd_fecha_nacimiento').value;
+        edad = document.getElementById('upd_edad').value;
+        telefono = document.getElementById('upd_telefono').value;
+        estadoCivil = document.getElementById('upd_estado_civil').value;
+        gradoInstruccion = document.getElementById('upd_grado_instrucion').value;
+        ocupacion = document.getElementById('upd_ocupacion').value;
+        telefonoEmergencia = document.getElementById('upd_telefono_emergencia').value;
+        nombreContacto = document.getElementById('upd_nombre_contacto').value;
+        parentescoEmergencia = document.getElementById('upd_parentesco_emergencia').value;
+        correo = document.getElementById('upd_correo').value;
+
+        paisResidencia = document.getElementById('upd_pais_residencia').value;
+        departamentoResidencia = document.getElementById('upd_departamento_residencia').value;
+        provinciaResidencia = document.getElementById('upd_provincia_residencia').value;
+        distritoResidencia = document.getElementById('upd_distrito_residencia').value;
+        direccionResidencia = document.getElementById('upd_direccion_residencia').value;
+        // Datos de lugar de nacimiento
+        paisNacimiento = document.getElementById('upd_pais_nacimiento').value;
+        departamentoNacimiento = document.getElementById('upd_departamento_nacimiento').value;
+        provinciaNacimiento = document.getElementById('upd_provincia_nacimiento').value;
+        distritoNacimiento = document.getElementById('upd_distrito_nacimiento').value;
+        direccionNacimiento = document.getElementById('upd_direccion_nacimiento').value;
+
+        $.ajax({
+            method: "POST",
+            url: 'controllers/ctrProgramacion_ocupacional.php',
+            data: {
+                "accion": "UPDATE_PACIENTE",
+                "id_paciente" : id_paciente,
+                "tipo_documento": tipoDocumento,
+                "numeroDocumento": numeroDocumento,
+                "nombre_completo": nombreCompleto,
+                "sexo": sexo,
+                "fecha_nacimiento": fechaNacimiento,
+                "edad": edad,
+                "telefono": telefono,
+                "estado_civil": estadoCivil,
+                "grado_instruccion": gradoInstruccion,
+                "ocupacion": ocupacion,
+                "telefono_emergencia": telefonoEmergencia,
+                "nombre_contacto": nombreContacto,
+                "parentesco_emergencia": parentescoEmergencia,
+                "correo": correo,
+                "pais_residencia": paisResidencia,
+                "departamento_residencia": departamentoResidencia,
+                "provincia_residencia": provinciaResidencia,
+                "distrito_residencia": distritoResidencia,
+                "direccion_residencia": direccionResidencia,
+                "pais_nacimiento": paisNacimiento,
+                "departamento_nacimiento": departamentoNacimiento,
+                "provincia_nacimiento": provinciaNacimiento,
+                "distrito_nacimiento": distritoNacimiento,
+                "direccion_nacimiento": direccionNacimiento
+            }
+        })
+        .done(function( retorno ) {
+            
+            if(retorno=='ERROR'){
+                alert('ERROR AL ACTUALIZAR EL PACIENTE');
+            }
+            else{
+                alert('Paciente Actualizado!');
+                $('#EditPacienteModal').modal('hide');
+            }
+
+        }); 
+    }
+     
+}
+
+function validarFormularioA() {
+    var tipoDocumento = document.getElementById('upd_tipo_documento').value;
+    var numeroDocumento = document.getElementById('upd_numero_documento').value;
+    var nombreCompleto = document.getElementById('upd_nombre_completo').value;
+    var sexo = document.getElementById('upd_sexo').value;
+    var fechaNacimiento = document.getElementById('upd_fecha_nacimiento').value;
+    var edad = document.getElementById('upd_edad').value;
+    var telefono = document.getElementById('upd_telefono').value;
+    var estadoCivil = document.getElementById('upd_estado_civil').value;
+    var gradoInstruccion = document.getElementById('upd_grado_instrucion').value;
+    var ocupacion = document.getElementById('upd_ocupacion').value;
+    var telefonoEmergencia = document.getElementById('upd_telefono_emergencia').value;
+    var nombreContacto = document.getElementById('upd_nombre_contacto').value;
+    var parentescoEmergencia = document.getElementById('upd_parentesco_emergencia').value;
+    var correo = document.getElementById('upd_correo').value;
+
+    var paisResidencia = document.getElementById('upd_pais_residencia').value;
+    var direccionResidencia = document.getElementById('upd_direccion_residencia').value;
+    
+    var paisNacimiento = document.getElementById('upd_pais_nacimiento').value;
+    var direccionNacimiento = document.getElementById('upd_direccion_nacimiento').value;
+
+    if (!tipoDocumento || !numeroDocumento || !nombreCompleto || !sexo || !fechaNacimiento || !edad || 
+        !telefono || !estadoCivil || !gradoInstruccion || !ocupacion || !telefonoEmergencia || 
+        !nombreContacto || !parentescoEmergencia || !correo ||
+        !paisResidencia || !direccionResidencia || !paisNacimiento || !direccionNacimiento) {
+        
+        alert("Por favor, complete todos los campos obligatorios.");
+        return false; 
+    }
+    return true;
+}
+
+function AbrirModalEdicionPaciente (id_paciente){
+
+    $('#EditPacienteModal').modal('show');
+    $.ajax({
+          method: "POST",
+          url: 'controllers/ctrProgramacion_ocupacional.php',
+          data: {
+              "accion": "BUSCAR_PACIENTE_EDIT",
+              "id_paciente": id_paciente
+            }
+    })
+    .done(function( retorno ) {
+        retorno=retorno.split('%');
+        document.getElementById('upd_id_paciente').value=retorno[0]
+        document.getElementById('upd_tipo_documento').value=retorno[2]
+        document.getElementById('upd_numero_documento').value=retorno[3]
+        document.getElementById('upd_nombre_completo').value=retorno[4]
+        document.getElementById('upd_sexo').value=retorno[5]
+        document.getElementById('upd_fecha_nacimiento').value=retorno[6]
+        document.getElementById('upd_edad').value=retorno[7]
+        document.getElementById('upd_telefono').value=retorno[8]
+        document.getElementById('upd_estado_civil').value=retorno[9]
+        document.getElementById('upd_grado_instrucion').value=retorno[10]
+        document.getElementById('upd_ocupacion').value=retorno[11]
+        document.getElementById('upd_telefono_emergencia').value=retorno[12]
+        document.getElementById('upd_nombre_contacto').value=retorno[13]
+        document.getElementById('upd_parentesco_emergencia').value=retorno[14]
+        document.getElementById('upd_correo').value=retorno[15]
+        document.getElementById('upd_pais_residencia').value=retorno[16]
+        document.getElementById('upd_departamento_residencia').value=retorno[17]
+        document.getElementById('upd_provincia_residencia').value=retorno[18]
+        document.getElementById('upd_distrito_residencia').value=retorno[19]
+        document.getElementById('upd_direccion_residencia').value=retorno[20]
+        
+        document.getElementById('upd_pais_nacimiento').value=retorno[21]
+        document.getElementById('upd_departamento_nacimiento').value=retorno[22]
+        document.getElementById('upd_provincia_nacimiento').value=retorno[23]
+        document.getElementById('upd_distrito_nacimiento').value=retorno[24]
+        document.getElementById('upd_direccion_nacimiento').value=retorno[25]
+
+    }); 
+}
 
 function EliminarProgramacion (){
     id_programacion=document.getElementById('prog_delete_id').value;
@@ -582,12 +1085,14 @@ function validarFormulario() {
 
 function BuscarPaciente(){
     documento= document.getElementById('add_numero_documento').value;
+    fecha= document.getElementById('fecha_detalle_inicio').value;
     $.ajax({
           method: "POST",
           url: 'controllers/ctrProgramacion_ocupacional.php',
           data: {
               "accion": "BUSCAR_PACIENTE",
-              "documento": documento
+              "documento": documento,
+              "fecha" : fecha
             }
     })
     .done(function( retorno ) {
@@ -597,6 +1102,13 @@ function BuscarPaciente(){
 
         var additionalData2 = document.getElementById('additionalData2');
         additionalData2.style.display = "block";
+        if(retorno[0]=='4'){
+            alert("Paciente ya programado para hoy.");
+            additionalData.style.display = "none";
+            additionalData2.style.display = "none";
+            $('#AddModal').modal('hide');
+
+        }
         if(retorno[0]=='3'){
             alert("Sin informacion encontrada");
             document.getElementById('add_numero_documento').value='';
