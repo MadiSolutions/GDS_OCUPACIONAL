@@ -322,72 +322,95 @@
 
 
 <div class="modal fade" id="ModalDatosProgramacion" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-xs" role="document">
+    <div class="modal-dialog modal-xs" role="document" id="modalDialogVariables">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#00b3ba;">
                 <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Datos Protocolo / Perfil</h4>
             </div>
             <div class="modal-body">
+                <!-- Contenedor Flex para los formularios y tabla -->
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="flex: 1; padding-right: 10px;">
+                        <!-- Tabla con los campos del formulario -->
+                        <table id="example2" class="table table-bordered table-hover">
+                            <tr>
+                                <td>
+                                    <label for="prog_codigo_colaborador">Codigo Colaborador</label>
+                                </td>
+                                <td>
+                                    <input type="text" name="prog_codigo_colaborador" id="prog_codigo_colaborador" class="form-control" required="required" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="prog_nombre">Nombre Colaborador</label>
+                                </td>
+                                <td>
+                                    <input type="text" name="prog_nombre" id="prog_nombre" class="form-control" required="required" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="prog_proyecto">Proyecto</label>
+                                </td>
+                                <td>
+                                    <select name="prog_proyecto" id='prog_proyecto' class="form-control">
+                                    <?php 
+                                        //session_start();
+                                        $id_empresa=$_SESSION['id_empresa'];
+                                        $query="Select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1 and id_empresa='$id_empresa'";
+                                        $res = mysqli_query($con,$query);
+                                        while ($row = mysqli_fetch_assoc($res)):
+                                            echo "<option value=".$row['id_proyecto'].">".$row['descripcion']."</option>";
+                                        endwhile;
+                                    ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="prog_tipo_examenocupacional">Tipo Examen Ocupacional</label>
+                                </td>
+                                <td>
+                                    <select name="prog_tipo_examenocupacional" id='prog_tipo_examenocupacional' class="form-control">
+                                        <option value="">Seleccione una provincia</option>
+                                        <option value="PREOCUPACIONAL">PREOCUPACIONAL</option>
+                                        <option value="PERIODICO">PERIODICO</option>
+                                        <option value="RETIRO">RETIRO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="prog_tipo_colaborador">Tipo Colaborador</label>
+                                </td>
+                                <td>
+                                    <select name="prog_tipo_colaborador" id='prog_tipo_colaborador' class="form-control">
+                                        <option value="">Seleccione una provincia</option>
+                                        <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                                        <option value="OPERATIVO">OPERATIVO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GenerarVariablesEMO()">Siguiente</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     
-                    <table id="example2" class="table table-bordered table-hover">
-                        <tr>
-                            <td>
-                                <label for="prog_codigo_colaborador">Codigo Colaborador</label>
-                            </td>
-                            <td>
-                                <input type="text" name="prog_codigo_colaborador" id="prog_codigo_colaborador" class="form-control" required="required" readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="prog_nombre">Nombre Colaborador</label>
-                            </td>
-                            <td>
-                                <input type="text" name="prog_nombre" id="prog_nombre" class="form-control" required="required" readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="prog_proyecto">Proyecto</label>
-                            </td>
-                            <td>
-                                <select name="prog_proyecto" id='prog_proyecto' class="form-control">
-                                <?php 
-                                    //session_start();
-                                    $id_empresa=$_SESSION['id_empresa'];
-                                    $query="Select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1 and id_empresa='$id_empresa'";
-                                    $res = mysqli_query($con,$query);
-                                    while ($row = mysqli_fetch_assoc($res)):
-                                        echo "<option value=".$row['id_proyecto'].">".$row['descripcion']."</option>";
-                                    endwhile;
-                                ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="prog_protocolo">Protocolo / Perfil</label>
-                            </td>
-                            <td>
-                            <select name="prog_protocolo" id='prog_protocolo' class="form-control">
-                                <?php 
-                                    //session_start();
-                                    $id_empresa=$_SESSION['id_empresa'];
-                                    $query="Select id_protocolo,nombre from ma_ocupacional_protocolos where estado=1 and id_empresa='$id_empresa'";
-                                    $res = mysqli_query($con,$query);
-                                    while ($row = mysqli_fetch_assoc($res)):
-                                        echo "<option value=".$row['id_protocolo'].">".$row['nombre']."</option>";
-                                    endwhile;
-                                ?>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+                    <!-- div de preguntas que aparece al lado -->
+                    <div id="tabla_lista_preguntas" style="flex: 1; padding-left: 10px;display:none;max-height: 700px; overflow-y: auto;">
+                        <!-- Aquí se inyectará la tabla de preguntas generadas por JavaScript -->
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -624,68 +647,91 @@
 </div>
 
 <div class="modal fade" id="ModalEditDatosProgramacion" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-xs" role="document">
+        <div class="modal-dialog modal-xs" role="document" id="upd_modalDialogVariables">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#00b3ba;">
                 <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Datos Protocolo / Perfil</h4>
             </div>
             <div class="modal-body">
-                    <input type="hidden" name="upd_prog_id_programacion" id="upd_prog_id_programacion" value="" class="form-control">
-                    <table id="example2" class="table table-bordered table-hover">
-                        <tr>
-                            <td>
-                                <label for="upd_prog_codigo_colaborador">Codigo Colaborador</label>
-                            </td>
-                            <td>
-                                <input type="text" name="upd_prog_codigo_colaborador" id="upd_prog_codigo_colaborador" class="form-control" required="required" readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="upd_prog_nombre">Nombre Colaborador</label>
-                            </td>
-                            <td>
-                                <input type="text" name="upd_prog_nombre" id="upd_prog_nombre" class="form-control" required="required" readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="upd_prog_proyecto">Proyecto</label>
-                            </td>
-                            <td>
-                                <select name="upd_prog_proyecto" id='upd_prog_proyecto' class="form-control">
-                                <?php 
-                                    //session_start();
-                                    $id_empresa=$_SESSION['id_empresa'];
-                                    $query="Select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1 and id_empresa='$id_empresa'";
-                                    $res = mysqli_query($con,$query);
-                                    while ($row = mysqli_fetch_assoc($res)):
-                                        echo "<option value=".$row['id_proyecto'].">".$row['descripcion']."</option>";
-                                    endwhile;
-                                ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="upd_prog_protocolo">Protocolo / Perfil</label>
-                            </td>
-                            <td>
-                            <select name="upd_prog_protocolo" id='upd_prog_protocolo' class="form-control">
-                                <?php 
-                                    //session_start();
-                                    $id_empresa=$_SESSION['id_empresa'];
-                                    $query="Select id_protocolo,nombre from ma_ocupacional_protocolos where estado=1 and id_empresa='$id_empresa'";
-                                    $res = mysqli_query($con,$query);
-                                    while ($row = mysqli_fetch_assoc($res)):
-                                        echo "<option value=".$row['id_protocolo'].">".$row['nombre']."</option>";
-                                    endwhile;
-                                ?>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Actualizar</button>
+                <!-- Contenedor Flex para los formularios y tabla -->
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="flex: 1; padding-right: 10px;">
+                        <!-- Tabla con los campos del formulario -->
+                        <input type="hidden" name="upd_prog_id_programacion" id="upd_prog_id_programacion" value="" class="form-control">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <tr>
+                                <td>
+                                    <label for="upd_prog_codigo_colaborador">Codigo Colaborador</label>
+                                </td>
+                                <td>
+                                    <input type="text" name="upd_prog_codigo_colaborador" id="upd_prog_codigo_colaborador" class="form-control" required="required" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="upd_prog_nombre">Nombre Colaborador</label>
+                                </td>
+                                <td>
+                                    <input type="text" name="upd_prog_nombre" id="upd_prog_nombre" class="form-control" required="required" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="upd_prog_proyecto">Proyecto</label>
+                                </td>
+                                <td>
+                                    <select name="upd_prog_proyecto" id='upd_prog_proyecto' class="form-control">
+                                    <?php 
+                                        //session_start();
+                                        $id_empresa=$_SESSION['id_empresa'];
+                                        $query="Select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1 and id_empresa='$id_empresa'";
+                                        $res = mysqli_query($con,$query);
+                                        while ($row = mysqli_fetch_assoc($res)):
+                                            echo "<option value=".$row['id_proyecto'].">".$row['descripcion']."</option>";
+                                        endwhile;
+                                    ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="upd_prog_tipo_examenocupacional">Tipo Examen Ocupacional</label>
+                                </td>
+                                <td>
+                                    <select name="upd_prog_tipo_examenocupacional" id='upd_prog_tipo_examenocupacional' class="form-control">
+                                        <option value="">Seleccione una provincia</option>
+                                        <option value="PREOCUPACIONAL">PREOCUPACIONAL</option>
+                                        <option value="PERIODICO">PERIODICO</option>
+                                        <option value="RETIRO">RETIRO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="upd_prog_tipo_colaborador">Tipo Colaborador</label>
+                                </td>
+                                <td>
+                                    <select name="upd_prog_tipo_colaborador" id='upd_prog_tipo_colaborador' class="form-control">
+                                        <option value="">Seleccione una provincia</option>
+                                        <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                                        <option value="OPERATIVO">OPERATIVO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GenerarVariablesEMOEdit()">Siguiente</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- div de preguntas que aparece al lado -->
+                    <div id="upd_tabla_lista_preguntas" style="flex: 1; padding-left: 10px;display:none;max-height: 700px; overflow-y: auto;">
+                        <!-- Aquí se inyectará la tabla de preguntas generadas por JavaScript -->
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -701,32 +747,1212 @@ window.onload = function() {
     cargarTabla();
 };
 
+function GenerarVariablesEMO(){
+    tipo_examen=document.getElementById('prog_tipo_examenocupacional').value;
+    tipo_colaborador=document.getElementById('prog_tipo_colaborador').value;
+
+    switch (tipo_examen){
+        case "PREOCUPACIONAL":
+            if(tipo_colaborador=='ADMINISTRATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+            if(tipo_colaborador=='OPERATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_trabajoaltura" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN ALTURA</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_trabajocaliente" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN CALIENTE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_manalimentos" /><b>&nbsp;&nbsp;&nbsp; MANIPULACION DE ALIMENTOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_personalsalud" /><b>&nbsp;&nbsp;&nbsp; PERSONAL DE SALUD</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_soldador" /><b>&nbsp;&nbsp;&nbsp; SOLDADOR</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+        break;
+        case 'PERIODICO':
+            if(tipo_colaborador=='ADMINISTRATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_ginecologia" /><b>&nbsp;&nbsp;&nbsp; PRUEBAS GINECOLOGICAS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+            if(tipo_colaborador=='OPERATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_trabajoaltura" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN ALTURA</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_trabajocaliente" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN CALIENTE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_ginecologia" /><b>&nbsp;&nbsp;&nbsp; PRUEBAS GINECOLOGICAS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_particuladorespirable" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A PARTICULADO RESPIRABLE - SILICE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_ruido" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A RUIDO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                               <tr>
+                                    <td><input type="checkbox" id="cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_soldador" /><b>&nbsp;&nbsp;&nbsp; SOLDADOR</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_manalimentos" /><b>&nbsp;&nbsp;&nbsp; MANIPULACION DE ALIMENTOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_personalsalud" /><b>&nbsp;&nbsp;&nbsp; PERSONAL DE SALUD</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+        break;
+        case "RETIRO":
+            if(tipo_colaborador=='ADMINISTRATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_ruido" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A RUIDO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_particuladorespirable" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A PARTICULADO RESPIRABLE - SILICE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+            if(tipo_colaborador=='OPERATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_ruido" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A RUIDO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_particuladorespirable" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A PARTICULADO RESPIRABLE - SILICE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_soldador" /><b>&nbsp;&nbsp;&nbsp; SOLDADOR</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_personalsalud" /><b>&nbsp;&nbsp;&nbsp; PERSONAL DE SALUD</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="GuardarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+        break;
+    }
+}
+function GenerarVariablesEMOEdit(){
+    tipo_examen=document.getElementById('upd_prog_tipo_examenocupacional').value;
+    tipo_colaborador=document.getElementById('upd_prog_tipo_colaborador').value;
+
+    switch (tipo_examen){
+        case "PREOCUPACIONAL":
+            if(tipo_colaborador=='ADMINISTRATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('upd_tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('upd_tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('upd_modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalEditDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+            if(tipo_colaborador=='OPERATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_trabajoaltura" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN ALTURA</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_trabajocaliente" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN CALIENTE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_manalimentos" /><b>&nbsp;&nbsp;&nbsp; MANIPULACION DE ALIMENTOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_personalsalud" /><b>&nbsp;&nbsp;&nbsp; PERSONAL DE SALUD</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_soldador" /><b>&nbsp;&nbsp;&nbsp; SOLDADOR</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('upd_tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('upd_tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('upd_modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalEditDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+        break;
+        case 'PERIODICO':
+            if(tipo_colaborador=='ADMINISTRATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_ginecologia" /><b>&nbsp;&nbsp;&nbsp; PRUEBAS GINECOLOGICAS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('upd_tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('upd_tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('upd_modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalEditDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+            if(tipo_colaborador=='OPERATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_conductor" /><b>&nbsp;&nbsp;&nbsp; CONDUCCION DE VEHICULOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_framigham" /><b>&nbsp;&nbsp;&nbsp; SCORE FRAMIGHAM MAYOR IGUAL 10%</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_trabajoaltura" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN ALTURA</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_trabajocaliente" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN CALIENTE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_altamontana" /><b>&nbsp;&nbsp;&nbsp; ALTA MONTAÑA - 4800MSNM</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_imcalto" /><b>&nbsp;&nbsp;&nbsp; IMC MAYOR IGUAL A 35 kg/m3</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_ginecologia" /><b>&nbsp;&nbsp;&nbsp; PRUEBAS GINECOLOGICAS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_particuladorespirable" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A PARTICULADO RESPIRABLE - SILICE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_ruido" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A RUIDO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                               <tr>
+                                    <td><input type="checkbox" id="upd_cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_diabetico" /><b>&nbsp;&nbsp;&nbsp; DIABETICO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_soldador" /><b>&nbsp;&nbsp;&nbsp; SOLDADOR</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_manalimentos" /><b>&nbsp;&nbsp;&nbsp; MANIPULACION DE ALIMENTOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_personalsalud" /><b>&nbsp;&nbsp;&nbsp; PERSONAL DE SALUD</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('upd_tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('upd_tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('upd_modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalEditDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+        break;
+        case "RETIRO":
+            if(tipo_colaborador=='ADMINISTRATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_ruido" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A RUIDO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_particuladorespirable" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A PARTICULADO RESPIRABLE - SILICE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('upd_tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('upd_tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('upd_modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalEditDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+            if(tipo_colaborador=='OPERATIVO'){
+                preguntasHTML = `
+                            <table id="example2" class="table table-bordered table-hover" style="width:100%;margin: 0 auto;">
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covid" /><b>&nbsp;&nbsp;&nbsp; TUVO COVID</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_covidsevero" /><b>&nbsp;&nbsp;&nbsp; COVID MODERADO O SEVERO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_ruido" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A RUIDO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_particuladorespirable" /><b>&nbsp;&nbsp;&nbsp; EXPUESTO A PARTICULADO RESPIRABLE - SILICE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_buzo" /><b>&nbsp;&nbsp;&nbsp; BUZO</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_varonmayor45" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 45 AÑOS</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_opcvaronmayor50" /><b>&nbsp;&nbsp;&nbsp; VARON MAYOR A 50 AÑOS (OPCIONAL)</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_soldador" /><b>&nbsp;&nbsp;&nbsp; SOLDADOR</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_personalsalud" /><b>&nbsp;&nbsp;&nbsp; PERSONAL DE SALUD</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_rescate" /><b>&nbsp;&nbsp;&nbsp; TRABAJO EN RESCATE</b></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="upd_cbox_viajerofrec" /><b>&nbsp;&nbsp;&nbsp; EJECUTIVO O VIAJERO FRECUENTE</b></td>
+                                </tr>
+                                <tr>
+                                <td style="text-align: right;">
+                                    <button type="button" style="background-color:#00b3ba; color:#ffffff" class="btn btn-primary" onclick="ActualizarProgramacionPersonal()">Guardar</button>
+                                </td>
+                            </tr>
+                            </table>
+                        `;
+                document.getElementById('upd_tabla_lista_preguntas').innerHTML = preguntasHTML;
+
+                let tablaPreguntas = document.getElementById('upd_tabla_lista_preguntas');
+                tablaPreguntas.style.display = 'block';  
+                let modalDialog = document.getElementById('upd_modalDialogVariables');
+                modalDialog.classList.remove('modal-xs'); 
+                modalDialog.classList.add('modal-xl');    
+                $('#ModalEditDatosProgramacion').animate({
+                    scrollTop: $(document).height()
+                }, 500);
+            }
+        break;
+    }
+}
+
 function ActualizarProgramacionPersonal(){
     id_programacion=document.getElementById('upd_prog_id_programacion').value;
     id_proyecto=document.getElementById('upd_prog_proyecto').value;
-    id_protocolo=document.getElementById('upd_prog_protocolo').value;
+    let tipo_examenocupacional = document.getElementById('upd_prog_tipo_examenocupacional').value;
+
+    // Primero, validamos que se haya seleccionado un tipo de examen
+    if (!tipo_examenocupacional) {
+        alert("Debe seleccionar un tipo de examen ocupacional.");
+        return; // Salimos si no se seleccionó el tipo de examen
+    }
+
+    // Capturamos el tipo de colaborador desde el campo select
+    let tipo_colaborador = document.getElementById('upd_prog_tipo_colaborador').value;
+
+    // Si no se seleccionó el tipo de colaborador, salimos de la función
+    if (!tipo_colaborador) {
+        alert("Debe seleccionar el tipo de colaborador.");
+        return;
+    }
+
+    let datosSeleccionados = {};
+    let checkboxes = [
+        'upd_cbox_conductor', 'upd_cbox_covid', 'upd_cbox_covidsevero', 'upd_cbox_framigham', 
+        'upd_cbox_rescate', 'upd_cbox_trabajoaltura', 'upd_cbox_trabajocaliente', 'upd_cbox_altamontana', 
+        'upd_cbox_imcalto', 'upd_cbox_ginecologia', 'upd_cbox_particuladorespirable', 'upd_cbox_ruido', 
+        'upd_cbox_buzo', 'upd_cbox_varonmayor45', 'upd_cbox_opcvaronmayor50', 'upd_cbox_diabetico', 
+        'upd_cbox_soldador', 'upd_cbox_manalimentos', 'upd_cbox_personalsalud', 'upd_cbox_viajerofrec'
+    ];
+
+    let numerosResultado = "";
+
+    let asignacionNumeros = {
+        'upd_cbox_conductor': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [99, 102,113,150];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [99,100,101,102,113,146,147,148,150];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [99, 102,113,150];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [99, 102,113,150];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            
+        },
+        'upd_cbox_covid': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [104];
+            }
+        },
+        'upd_cbox_covidsevero': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [153,154];
+            }
+        },
+        'upd_cbox_framigham': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'upd_cbox_rescate': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117,146,147,148,166];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117,146,147,148,166];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [166];
+            }
+        },
+        'upd_cbox_trabajoaltura': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'upd_cbox_trabajocaliente': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'upd_cbox_altamontana': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'upd_cbox_imcalto': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'upd_cbox_ginecologia': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [118,119,120];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [118,119,120];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'upd_cbox_particuladorespirable': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [121];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [121];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [121];
+            }
+        },
+        'upd_cbox_ruido': function() {
+            // Ahora con condiciones
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [115];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [115];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [115];
+            }
+        },
+        'upd_cbox_buzo': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [122,123,124];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [122,123,124];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [122,123,124];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [122,123,124];
+            }
+        },
+        'upd_cbox_varonmayor45': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [139];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [139];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [139];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [139];
+            }
+        },
+        'upd_cbox_opcvaronmayor50': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [140,151];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [140,151];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [151];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [151];
+            }
+        },
+        'upd_cbox_diabetico': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'upd_cbox_soldador': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [155,156];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [155,156];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [155,156];
+            }
+        },
+        'upd_cbox_manalimentos': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [157,158,159,160,161,162,163,164,165];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [157,158,159,160,161,162,163,164,165];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [1];
+            }
+        },
+        'upd_cbox_personalsalud': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [167];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [167];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [167];
+            }
+        },
+        'upd_cbox_viajerofrec': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+        }
+    };
+
+
+
+    checkboxes.forEach(function (checkboxId) {
+        let checkbox = document.getElementById(checkboxId);
+        if (checkbox && checkbox.checked) { // Si el checkbox está activo
+            if (asignacionNumeros[checkboxId]) {
+                let numerosCheckbox = asignacionNumeros[checkboxId](); // Ejecutar la función para obtener los números
+                numerosCheckbox.forEach(function (numero) {
+                    numerosResultado += numero + ","; // Añadimos el número y una coma
+                });
+            }
+        }
+    });
+
+    if (numerosResultado.endsWith(",")) {
+        numerosResultado = numerosResultado.slice(0, -1);
+    }
+
     $.ajax({
         method: "POST",
         url: 'controllers/ctrProgramacion_ocupacional.php',
         data: {
             "accion": "UPDATE_PROGRAMACION",
             "id_programacion": id_programacion,
-            "id_proyecto": id_proyecto,
-            "id_protocolo": id_protocolo
+            "id_proyecto":id_proyecto,
+            "tipo_examenocupacional": tipo_examenocupacional,
+            "tipo_colaborador": tipo_colaborador,
+            "rptas":  numerosResultado
         }
     })
     .done(function( retorno ) {
         if(retorno==true){
             //alert(retorno);
-            alert("Programacion actualizada con Exito!");
+            alert("Paciente Actualizado con Exito!");
             $('#ModalEditDatosProgramacion').modal('hide');
             cargarTabla();
         }
-        if(retorno==false){
+        if(retorno=='ERROR'){
             alert("ERROR");
         }
     });   
-
 }
 
 function AbrirModalEdicionProgramacion (id_programacion,nombre_pac,cod_paciente){
@@ -745,7 +1971,8 @@ function AbrirModalEdicionProgramacion (id_programacion,nombre_pac,cod_paciente)
     .done(function( retorno ) {
         retorno=retorno.split('%');
         document.getElementById('upd_prog_proyecto').value=retorno[0]
-        document.getElementById('upd_prog_protocolo').value=retorno[2]
+        document.getElementById('upd_prog_tipo_examenocupacional').value=retorno[2]
+        document.getElementById('upd_prog_tipo_colaborador').value=retorno[3]
     }); 
 }
 
@@ -925,8 +2152,6 @@ function EliminarProgramacion (){
     }); 
 }
 
-
-
 function AbrirModalEliminacionProgramacion(id_programacion,nombre){
     $('#DeleteProgramacionModal').modal('show');
     document.getElementById('prog_delete_id').value = id_programacion;
@@ -943,8 +2168,462 @@ function VerModalNuevo(){
 function GuardarProgramacionPersonal(){
     id_paciente=document.getElementById('prog_codigo_colaborador').value;
     id_proyecto=document.getElementById('prog_proyecto').value;
-    id_protocolo=document.getElementById('prog_protocolo').value;
+
+    /*tipo_examenocupacional=document.getElementById('prog_tipo_examenocupacional').value;
+    tipo_colaborador=document.getElementById('prog_tipo_colaborador').value;*/
+    let tipo_examenocupacional = document.getElementById('prog_tipo_examenocupacional').value;
+
+    // Primero, validamos que se haya seleccionado un tipo de examen
+    if (!tipo_examenocupacional) {
+        alert("Debe seleccionar un tipo de examen ocupacional.");
+        return; // Salimos si no se seleccionó el tipo de examen
+    }
+
+    // Capturamos el tipo de colaborador desde el campo select
+    let tipo_colaborador = document.getElementById('prog_tipo_colaborador').value;
+
+    // Si no se seleccionó el tipo de colaborador, salimos de la función
+    if (!tipo_colaborador) {
+        alert("Debe seleccionar el tipo de colaborador.");
+        return;
+    }
+
+
     fecha=document.getElementById('fecha_detalle_inicio').value;
+
+    let datosSeleccionados = {};
+    let checkboxes = [
+        'cbox_conductor', 'cbox_covid', 'cbox_covidsevero', 'cbox_framigham', 
+        'cbox_rescate', 'cbox_trabajoaltura', 'cbox_trabajocaliente', 'cbox_altamontana', 
+        'cbox_imcalto', 'cbox_ginecologia', 'cbox_particuladorespirable', 'cbox_ruido', 
+        'cbox_buzo', 'cbox_varonmayor45', 'cbox_opcvaronmayor50', 'cbox_diabetico', 
+        'cbox_soldador', 'cbox_manalimentos', 'cbox_personalsalud', 'cbox_viajerofrec'
+    ];
+
+    let numerosResultado = "";
+
+    let asignacionNumeros = {
+        'cbox_conductor': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [99, 102,113,150];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [99,100,101,102,113,146,147,148,150];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [99, 102,113,150];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [99, 102,113,150];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            
+        },
+        'cbox_covid': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [104];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [104];
+            }
+        },
+        'cbox_covidsevero': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [153,154];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [153,154];
+            }
+        },
+        'cbox_framigham': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'cbox_rescate': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117,146,147,148,166];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117,146,147,148,166];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [166];
+            }
+        },
+        'cbox_trabajoaltura': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'cbox_trabajocaliente': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [146,147,148];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'cbox_altamontana': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'cbox_imcalto': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [117];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'cbox_ginecologia': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [118,119,120];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [118,119,120];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'cbox_particuladorespirable': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [121];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [121];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [121];
+            }
+        },
+        'cbox_ruido': function() {
+            // Ahora con condiciones
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [115];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [115];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [115];
+            }
+        },
+        'cbox_buzo': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [122,123,124];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [122,123,124];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [122,123,124];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [122,123,124];
+            }
+        },
+        'cbox_varonmayor45': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [139];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [139];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [139];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [139];
+            }
+        },
+        'cbox_opcvaronmayor50': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [140,151];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [140,151];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [151];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [151];
+            }
+        },
+        'cbox_diabetico': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [142];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [];
+            }
+        },
+        'cbox_soldador': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [155,156];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [155,156];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [155,156];
+            }
+        },
+        'cbox_manalimentos': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [157,158,159,160,161,162,163,164,165];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [157,158,159,160,161,162,163,164,165];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [1];
+            }
+        },
+        'cbox_personalsalud': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [167];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [167];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [167];
+            }
+        },
+        'cbox_viajerofrec': function() {
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "PREOCUPACIONAL" && tipo_colaborador === "OPERATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "PERIODICO" && tipo_colaborador === "OPERATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "ADMINISTRATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+            if (tipo_examenocupacional === "RETIRO" && tipo_colaborador === "OPERATIVO") {
+                return [168,169,170,171,172,173,174,175,176,177,178,179];
+            }
+        }
+    };
+
+
+
+    checkboxes.forEach(function (checkboxId) {
+        let checkbox = document.getElementById(checkboxId);
+        if (checkbox && checkbox.checked) { // Si el checkbox está activo
+            if (asignacionNumeros[checkboxId]) {
+                let numerosCheckbox = asignacionNumeros[checkboxId](); // Ejecutar la función para obtener los números
+                numerosCheckbox.forEach(function (numero) {
+                    numerosResultado += numero + ","; // Añadimos el número y una coma
+                });
+            }
+        }
+    });
+
+    if (numerosResultado.endsWith(",")) {
+        numerosResultado = numerosResultado.slice(0, -1);
+    }
 
     $.ajax({
         method: "POST",
@@ -952,9 +2631,11 @@ function GuardarProgramacionPersonal(){
         data: {
             "accion": "GUARDAR_PROGRAMACION",
             "id_paciente": id_paciente,
-            "id_proyecto": id_proyecto,
-            "id_protocolo": id_protocolo,
-            "fecha":fecha
+            "id_proyecto":id_proyecto,
+            "tipo_examenocupacional": tipo_examenocupacional,
+            "tipo_colaborador": tipo_colaborador,
+            "fecha":fecha,
+            "rptas":  numerosResultado
         }
     })
     .done(function( retorno ) {

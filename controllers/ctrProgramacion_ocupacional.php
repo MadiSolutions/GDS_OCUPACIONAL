@@ -13,9 +13,40 @@ function controlador($accion) {
         case 'UPDATE_PROGRAMACION':
             $id_programacion = $_POST['id_programacion'];
             $id_proyecto = $_POST['id_proyecto'];
-            $id_protocolo = $_POST['id_protocolo'];
+            $tipo_examenocupacional = $_POST['tipo_examenocupacional'];
+            $tipo_colaborador = $_POST['tipo_colaborador'];
+            $rptas = $_POST['rptas'];
+            $list_base="";
 
-            $query = "update ma_ocupacional_programaciones set id_proyecto = ?, id_protocolo = ?, estado_bajada=0 where id_programacion= ?";
+            switch ($tipo_examenocupacional){
+                case 'PREOCUPACIONAL':
+                    if($tipo_colaborador=='ADMINISTRATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,103,105,106,107,108,109,110,111,112,114,115,116,121,125,126,127,128,129,130,131,132,133,134,135,136,137,138,141,143,144,145,149,152";
+                    }
+                    if($tipo_colaborador=='OPERATIVO'){
+                        $list_base="92,93,94,95,96,97,98,103,105,106,107,108,109,110,111,112,114,115,116,121,125,126,127,128,129,130,131,132,133,134,135,136,137,138,141,143,144,145,149,152";
+                    }
+                break;
+                case 'PERIODICO':
+                    if($tipo_colaborador=='ADMINISTRATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,103,105,106,107,108,110,111,112,114,116,125,126,127,129,130,131,132,133,134,135,136,141,143,144,145,149,152";
+                    }
+                    if($tipo_colaborador=='OPERATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,101,103,105,106,107,108,110,111,112,114,116,125,126,127,129,130,131,132,133,134,135,136,141,143,144,145,149,152";
+                    }
+                break;
+                case 'RETIRO':
+                    if($tipo_colaborador=='ADMINISTRATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,103,105,106,107,114,116,125,126,127,129,130,131,132,133,134,135,136,141,143,144,149,152";
+                    }
+                    if($tipo_colaborador=='OPERATIVO'){
+                        $list_base="92,93,94,95,97,103,105,106,107,114,116,125,126,127,131,133,134,135,141,143,144,149,152";
+                    }
+                break;
+            }
+
+
+            $query = "update ma_ocupacional_programaciones set id_proyecto = ?, examenocupacional = ?, tipo_colaborador = ?, list_adicionales = ? , list_base = ? , estado_bajada=0 where id_programacion= ?";
 
             $stmt = $cone->prepare($query);
 
@@ -23,7 +54,7 @@ function controlador($accion) {
                 die('Error en la preparación de la consulta: ' . $conn->error);
             }
 
-            $stmt->bind_param("iii", $id_proyecto, $id_protocolo, $id_programacion);
+            $stmt->bind_param("issssi", $id_proyecto, $tipo_examenocupacional, $tipo_colaborador,$rptas,$list_base,$id_programacion);
 
             if ($stmt->execute()) {
                 echo true;
@@ -34,7 +65,7 @@ function controlador($accion) {
         case 'BUSCAR_PROGRAMACION_EDIT':
             $id_programacion = $_POST['id_programacion'];
 
-            $query = "select a.id_programacion,b.*,c.* from (select * from ma_ocupacional_programaciones where id_programacion='$id_programacion')as a join (select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1)as b join (select id_protocolo,nombre from ma_ocupacional_protocolos where estado=1)as c on a.id_proyecto=b.id_proyecto and a.id_protocolo=c.id_protocolo;";
+            $query = "select a.*,b.descripcion from (select * from ma_ocupacional_programaciones where id_programacion='$id_programacion')as a join (select id_proyecto,descripcion from ma_ocupacional_proyectos where estado=1)as b on a.id_proyecto=b.id_proyecto;";
             $res = mysqli_query($cone, $query);
 
             $row_cnt = $res->num_rows;
@@ -43,8 +74,8 @@ function controlador($accion) {
                 $array = mysqli_fetch_array($res);
                 echo $array['id_proyecto'] . "%" .
                     $array['descripcion'] . "%" .
-                    $array['id_protocolo'] . "%" .
-                    $array['nombre'];
+                    $array['examenocupacional'] . "%" .
+                    $array['tipo_colaborador'].'%';
              }
         break;
         case 'UPDATE_PACIENTE':
@@ -208,12 +239,42 @@ function controlador($accion) {
             session_start();
             $id_paciente = $_POST['id_paciente'];
             $id_proyecto = $_POST['id_proyecto'];
-            $id_protocolo = $_POST['id_protocolo'];
-            $id_empresa = $_SESSION['id_empresa'];
+            $tipo_examenocupacional = $_POST['tipo_examenocupacional'];
+            $tipo_colaborador = $_POST['tipo_colaborador'];
             $fecha = $_POST['fecha'];
+            $lista = $_POST['rptas'];
+            $id_empresa=$_SESSION['id_empresa'];
+            $list_base="";
 
-            $sql = "INSERT INTO ma_ocupacional_programaciones (id_paciente,id_empresa,id_proyecto,id_protocolo,fecha,estado_bajada,estado) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            switch ($tipo_examenocupacional){
+                case 'PREOCUPACIONAL':
+                    if($tipo_colaborador=='ADMINISTRATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,103,105,106,107,108,109,110,111,112,114,115,116,121,125,126,127,128,129,130,131,132,133,134,135,136,137,138,141,143,144,145,149,152";
+                    }
+                    if($tipo_colaborador=='OPERATIVO'){
+                        $list_base="92,93,94,95,96,97,98,103,105,106,107,108,109,110,111,112,114,115,116,121,125,126,127,128,129,130,131,132,133,134,135,136,137,138,141,143,144,145,149,152";
+                    }
+                break;
+                case 'PERIODICO':
+                    if($tipo_colaborador=='ADMINISTRATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,103,105,106,107,108,110,111,112,114,116,125,126,127,129,130,131,132,133,134,135,136,141,143,144,145,149,152";
+                    }
+                    if($tipo_colaborador=='OPERATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,101,103,105,106,107,108,110,111,112,114,116,125,126,127,129,130,131,132,133,134,135,136,141,143,144,145,149,152";
+                    }
+                break;
+                case 'RETIRO':
+                    if($tipo_colaborador=='ADMINISTRATIVO'){
+                        $list_base="92,93,94,95,96,97,98,100,103,105,106,107,114,116,125,126,127,129,130,131,132,133,134,135,136,141,143,144,149,152";
+                    }
+                    if($tipo_colaborador=='OPERATIVO'){
+                        $list_base="92,93,94,95,97,103,105,106,107,114,116,125,126,127,131,133,134,135,141,143,144,149,152";
+                    }
+                break;
+            }
+
+            $sql = "INSERT INTO ma_ocupacional_programaciones (id_paciente,id_empresa,id_proyecto,examenocupacional,tipo_colaborador,list_base,list_adicionales,fecha,estado_bajada,estado) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
             $stmt = $cone->prepare($sql);
 
@@ -222,8 +283,9 @@ function controlador($accion) {
             }
             $estado_bajada=0;
             $estado=1;
+            //$lista=implode(',',$lista);
 
-            $stmt->bind_param("iiiisii", $id_paciente, $id_empresa, $id_proyecto, $id_protocolo, $fecha, $estado_bajada,$estado);
+            $stmt->bind_param("iiisssssii", $id_paciente, $id_empresa, $id_proyecto,$tipo_examenocupacional,$tipo_colaborador, $list_base,$lista, $fecha, $estado_bajada,$estado);
 
             if ($stmt->execute()) {
                 echo true;
@@ -426,7 +488,15 @@ function controlador($accion) {
             session_start();
             $fecha = $_POST['fecha']; 
             $id_empresa=$_SESSION['id_empresa'];
-            $query = "select prog.id_programacion as codigo, pac.id_paciente as id_paciente,pac.num_documento as dni,pac.nombre_completo as nombre,proy.id_proyecto,proy.descripcion as desc_proyecto,prot.id_protocolo, prot.nombre as nom_protocolo,prog.estado_bajada as estado_programacion from(SELECT * FROM ma_ocupacional_programaciones WHERE fecha = '$fecha' and estado=1 and id_empresa='$id_empresa')as prog join (select id_proyecto,descripcion from ma_ocupacional_proyectos where id_empresa='$id_empresa')as proy join (select id_protocolo,nombre from ma_ocupacional_protocolos where id_empresa='$id_empresa')as prot join (select id_paciente,num_documento,nombre_completo from ma_ocupacional_pacientes where estado=1 and id_empresa='$id_empresa')as pac on prog.id_proyecto=proy.id_proyecto and prog.id_protocolo=prot.id_protocolo and prog.id_paciente=pac.id_paciente;";
+            $query = "select prog.id_programacion as codigo, pac.id_paciente as id_paciente,pac.num_documento as dni,pac.nombre_completo as nombre,proy.id_proyecto,proy.descripcion as desc_proyecto,prog.estado_bajada as estado_programacion,prog.examenocupacional as exa_ocupacional, prog.tipo_colaborador as tipo_colaborador
+            from
+            (SELECT * FROM ma_ocupacional_programaciones WHERE fecha = '$fecha' and estado=1 and id_empresa='$id_empresa')as prog 
+            join 
+            (select id_proyecto,descripcion from ma_ocupacional_proyectos where id_empresa='$id_empresa')as proy 
+            join 
+            (select id_paciente,num_documento,nombre_completo from ma_ocupacional_pacientes where estado=1 and id_empresa='$id_empresa')as pac 
+            on 
+            prog.id_proyecto=proy.id_proyecto and prog.id_paciente=pac.id_paciente;";
             $res = mysqli_query($cone, $query);
             $fechafinal=explode('-',$fecha);
 
@@ -453,11 +523,11 @@ function controlador($accion) {
                         $estado_prog="PENDIENTE";
                     }
                     echo "<tr>";
-                    echo "<td>".$row['codigo']."</td><td>".$row['nombre'];
+                    echo "<td>".$row['codigo']."</td><td>".$row['dni'].'<br>'.$row['nombre'];
                     if($row['estado_programacion']=='0'){
                         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs" onclick="AbrirModalEdicionPaciente('."'".$row['id_paciente']."'".')"><li class="fa fa-edit"></li></button>'; 
                     }
-                    echo "</td><td>".$row['desc_proyecto']."<br>".$row['nom_protocolo'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                    echo "</td><td>".$row['desc_proyecto']."<br>".$row['exa_ocupacional'].'<br>'.$row['tipo_colaborador'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                     if ($row['estado_programacion']=='1'){
                         echo '</td><td><span class="badge badge-'.$color_alerta.'">'.$estado_prog."</span></td>";
                     }else{
