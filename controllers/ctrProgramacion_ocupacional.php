@@ -10,6 +10,62 @@ function controlador($accion) {
     $cone = mysqli_connect($host, $user, $pass, $db);  
 
     switch ($accion) {
+        case 'DELETE_PROYECTO':
+            $id_proyecto = $_POST['id_proyecto'];
+
+            $sql = "update ma_ocupacional_proyectos set estado=0 where id_proyecto='$id_proyecto' and estado='1'";
+            $exe = mysqli_query($cone, $sql);
+			if ($exe !== false) {
+				echo true;
+			} else {
+                echo(false);
+			}
+        break;
+        case 'VER_LISTA_PROYECTOS':
+            session_start();
+            $id_empresa=$_SESSION['id_empresa'];
+
+            $query = "select * from ma_ocupacional_proyectos where estado=1 and id_empresa='$id_empresa'";
+            $res = mysqli_query($cone, $query);
+            $row_cnt = $res->num_rows;
+
+            if($row_cnt>0){
+                echo "<h3> Proyectos Registrados</h3>";
+                echo "<br>";
+                echo "<table class='table table-bordered table-hover'>";
+                echo '<thead style="background-color:#00b3ba;color:#FFFFFF" >';
+                echo "<tr>";
+                echo "<th>Codigo</th><th>Nombres</th><th>-</th>";
+                echo "</tr>";
+                echo '</thead>';
+
+                while ($row = mysqli_fetch_assoc($res)) : 
+                    echo "<tr>";
+                    echo "<td>".$row['id_proyecto']."</td><td>".$row['descripcion']."</td>";
+                    echo '<td><button type="button" class="btn btn-danger btn-xs" onclick="AbrirModalEliminacionProyectos('."'".$row['id_proyecto']."','".$row['descripcion']."'".')"><li class="fa fa-trash"></li></button></td>'; 
+                    echo "</tr>";
+                endwhile;
+            }else{
+                echo "<h3> Sin Proyectos Registrados</h3>";
+            }
+        break;
+
+        case 'GUARDAR_PROYECTO':
+            session_start();
+            $id_empresa=$_SESSION['id_empresa'];
+            $descripcion = $_POST['descripcion']; 
+
+			$sql = "INSERT INTO ma_ocupacional_proyectos(id_empresa,descripcion,estado_bajada,estado)VALUES('$id_empresa','$descripcion', 0,1)";
+            $exe = mysqli_query($cone, $sql);
+			if ($exe !== false) {
+				echo("Datos Registrado al Sistema");
+			} else {
+                echo("ERROR: Su Datos No Pudieron Ser Registrado al Sistema");
+			}
+
+		break;	
+
+
         case 'UPDATE_PROGRAMACION':
             $id_programacion = $_POST['id_programacion'];
             $id_proyecto = $_POST['id_proyecto'];

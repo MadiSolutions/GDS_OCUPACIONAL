@@ -20,25 +20,47 @@
                     <div class="card-body">
                         <table>
                             <tr>
+                                <td>
+                                    <button type="button" style="background-color:#00b3ba;" onmouseover="this.style.backgroundColor='#007bff';" onmouseout="this.style.backgroundColor='#00b3ba';" class="btn btn-primary" onclick="AbrirModalProyectos()">Agregar Nuevo Proyecto</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table>
+                            <tr>
                                 <td colspan="2">
-                                    <label>Seleccione la Fecha</label>
+                                    <label>Seleccione la Fecha de Programaciones</label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <input type="date" name="fecha_detalle_inicio" id="fecha_detalle_inicio" value="<?= $hoy; ?>">
                                 </td>
-                                <td></td>
                                 <td>
                                     <button type="button" style="background-color:#00b3ba;" onmouseover="this.style.backgroundColor='#007bff';" onmouseout="this.style.backgroundColor='#00b3ba';" class="btn btn-primary" onclick="cargarTabla()">Actualizar</button>
                                 </td>
-
-
                             </tr>
                         </table>
-                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
                         <div id="tabla_lista_programaciones"></div>
-
                     </div>
                 </div>
             </div>
@@ -738,11 +760,139 @@
 </div>
 
 
+<div class="modal fade" id="AddModalProyecto" tabindex="-1" role="dialog">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#00b3ba;">
+                <h4 class="modal-title" id="defaultModalLabel" style="color:#ffff; font-weight: bold;">Proyectos</h4>
+            </div>
+            <div class="modal-body">
+            <table id="example2" class="table table-bordered table-hover">
+           
+                <tr>
+                    <td>
+                        <label for="descripcion_proyecto_add">Nombre del Proyecto</label>
+                    </td>
+                    <td>
+                        <input type="text" name="descripcion_proyecto_add" id="descripcion_proyecto_add" placeholder="Descripcion"  class="form-control" required="required">
+                    </td>
+                </tr>
+             
+
+            </table>                
+                    <button type="button" style="background-color:#00b3ba;" onmouseover="this.style.backgroundColor='#007bff';" onmouseout="this.style.backgroundColor='#00b3ba';" class="btn btn-primary" onclick="GuardarProyecto()">Guardar</li></button>
+                    <br><br>
+                    <div id="tabla_lista_proyectos"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect" style="background-color:#00b3ba; color:#ffffff" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="DeleteProyectoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h4 class="modal-title" id="defaultModalLabel">Eliminar Proyecto</h4>
+            </div>
+            <div class="modal-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <tr>
+                            <td>
+                                <label for="proy_delete_id">Codigo</label>
+                            </td>
+                            <td>
+                                <input type="text" name="proy_delete_id" id="proy_delete_id" class="form-control" required="required" readonly>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="proy_delete_nombre">Nombre Proyecto</label>
+                            </td>
+                            <td>
+                                <input type="text" name="proy_delete_nombre" id="proy_delete_nombre" class="form-control" required="required" readonly>  
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <button type="button" class="btn btn-danger" onclick="EliminarProyecto()">Eliminar</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
 <script>
 
+function EliminarProyecto (){
+    id_proyecto=document.getElementById('proy_delete_id').value;
+
+    $.ajax({
+        method: "POST",
+        url: 'controllers/ctrProgramacion_ocupacional.php',
+        data: {
+            "accion": "DELETE_PROYECTO",
+            "id_proyecto": id_proyecto
+        }
+    })
+    .done(function( retorno ) {
+        if(retorno==true){
+            alert('Proyecto Eliminado')
+            $('#DeleteProyectoModal').modal('hide');
+            AbrirModalProyectos()
+        }else{
+            alert('Proyecto no pudo ser eliminado')
+            $('#DeleteProyectoModal').modal('hide');
+            AbrirModalProyectos()
+        }
+    });
+}
+
+function AbrirModalEliminacionProyectos (codigo,nombre){
+    $('#AddModalProyecto').modal('hide');
+    $('#DeleteProyectoModal').modal('show');
+    document.getElementById('proy_delete_id').value=codigo
+    document.getElementById('proy_delete_nombre').value=nombre
+}
+
+function AbrirModalProyectos(){
+    $('#AddModalProyecto').modal('show');
+    $.ajax({
+        method: "POST",
+        url: 'controllers/ctrProgramacion_ocupacional.php',
+        data: {
+            "accion": "VER_LISTA_PROYECTOS"
+        }
+    })
+    .done(function( retorno ) {
+        $("#tabla_lista_proyectos").html(retorno);
+    });
+}
+
+function GuardarProyecto(){
+
+    descripcion=document.getElementById('descripcion_proyecto_add').value
+ 
+    $.ajax({
+        method: "POST",
+        url: 'controllers/ctrProgramacion_ocupacional.php',
+        data: {
+            "accion": "GUARDAR_PROYECTO",
+            "descripcion": descripcion
+        }
+    })
+    .done(function( retorno ) {
+        alert(retorno);
+        $('#AddModalProyecto').modal('hide');
+    });   
+}
 window.onload = function() {
     cargarTabla();
 };
